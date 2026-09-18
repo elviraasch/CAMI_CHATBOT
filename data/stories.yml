@@ -1,0 +1,16 @@
+version: "3.1"
+
+stories:
+  - story: Edukasi emisi lalu pilih kalkulator
+    steps:
+      - intent: ask_carbon_emission
+      - action: utter_ask_carbon_emission
+      - intent: hitung_emisi
+      - action: action_start_account_calculation
+
+  - story: Edukasi offset lalu selesai
+    steps:
+      - intent: ask_carbon_offset
+      - action: utter_ask_carbon_offset
+      - intent: goodbye
+      - action: utter_goodbye

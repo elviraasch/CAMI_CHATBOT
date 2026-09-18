@@ -1,0 +1,249 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - halo
+      - hai
+      - hello
+      - hi
+      - selamat pagi
+      - selamat siang
+      - selamat sore
+      - selamat malam
+      - hai Cami
+      - halo CAMAR
+      - permisi
+      - apa kabar
+
+  - intent: goodbye
+    examples: |
+      - sampai jumpa
+      - selamat tinggal
+      - dadah
+      - bye
+      - cukup dulu
+      - terima kasih sampai jumpa
+      - saya selesai
+      - sudah cukup
+      - terima kasih Cami
+      - sampai nanti
+
+  - intent: bot_challenge
+    examples: |
+      - kamu siapa
+      - siapa nama kamu
+      - apakah kamu robot
+      - kamu manusia atau bot
+      - apakah ini chatbot
+      - siapa Cami
+      - apa tugas kamu
+      - kamu bisa membantu apa
+
+  - intent: ask_carbon_offset
+    examples: |
+      - apa itu carbon offset
+      - jelaskan carbon offset
+      - carbon offset itu apa
+      - apa yang dimaksud carbon offset
+      - bagaimana carbon offset bekerja
+      - untuk apa melakukan carbon offset
+      - bagaimana cara mengimbangi emisi karbon
+      - apa manfaat carbon offset
+      - jelaskan pengimbangan karbon
+      - apakah carbon offset dapat mengurangi emisi
+      - apa hubungan kredit karbon dengan carbon offset
+      - bagaimana cara melakukan offset karbon
+
+  - intent: ask_carbon_emission
+    examples: |
+      - apa itu emisi karbon
+      - jelaskan pengertian emisi karbon
+      - dari mana emisi karbon berasal
+      - apa yang dimaksud emisi karbon
+      - emisi karbon itu apa
+      - apa penyebab emisi karbon
+      - kegiatan apa yang menghasilkan karbon
+      - jelaskan tentang jejak karbon
+      - apa itu jejak karbon
+      - mengapa emisi karbon perlu dihitung
+      - apa dampak emisi karbon
+      - bagaimana karbon dihasilkan
+
+  - intent: ask_project_recommendation
+    examples: |
+      - rekomendasikan proyek offset untuk saya
+      - rekomendasi proyek
+      - rekomendasi proyek carbon offset
+      - proyek apa yang cocok untuk emisi saya
+      - carikan proyek sesuai emisi saya saat ini
+      - saya mau rekomendasi proyek dari hasil emisi terakhir
+      - proyek offset apa yang sesuai dengan jejak karbon saya
+      - bantu pilih proyek untuk mengimbangi emisi saya
+      - lihat rekomendasi proyek saya
+      - tampilkan proyek yang cocok untuk saya
+      - ada proyek yang sesuai dengan total emisi saya
+      - berikan saran proyek tanpa menghitung ulang emisi
+      - saya sudah menghitung emisi, proyek mana yang cocok
+      - proyek apa yang sebaiknya saya pilih
+      - rekomendasikan proyek berdasarkan kalkulasi sebelumnya
+      - carikan proyek carbon offset untuk kebutuhan saya
+      - lihat proyek offset yang relevan
+      - saya ingin melihat rekomendasi proyek yang tersedia
+
+  - intent: hitung_emisi
+    examples: |
+      - saya ingin menghitung emisi
+      - hitung emisi karbon saya
+      - saya mau menggunakan kalkulator karbon
+      - berapa emisi karbon saya
+      - bantu hitung emisi saya
+      - saya mau cek jejak karbon
+      - mulai perhitungan emisi
+      - buka kalkulator emisi
+      - bantu saya menghitung karbon
+      - bagaimana cara menghitung emisi saya
+      - saya ingin tahu jumlah emisi saya
+      - cek total emisi saya
+
+  - intent: hitung_emisi_transportasi
+    examples: |
+      - hitung emisi kendaraan saya
+      - saya ingin menghitung emisi transportasi
+      - hitung emisi mobil
+      - hitung emisi motor
+      - berapa emisi perjalanan saya
+      - cek karbon dari kendaraan pribadi
+      - hitung jejak karbon perjalanan
+      - berapa emisi dari perjalanan harian saya
+      - kalkulasi emisi kendaraan
+      - saya naik motor setiap hari
+      - saya memakai mobil untuk bekerja
+      - hitung karbon dari penggunaan bensin
+      - mau cek emisi transportasi
+      - emisi kendaraan saya berapa
+      - bantu hitung perjalanan saya
+
+  - intent: hitung_emisi_listrik
+    examples: |
+      - hitung emisi listrik
+      - saya ingin menghitung emisi listrik
+      - berapa emisi listrik rumah saya
+      - cek jejak karbon dari listrik
+      - bantu hitung karbon pemakaian PLN
+      - saya mau menghitung listrik bulanan
+      - berapa karbon dari konsumsi listrik saya
+      - kalkulasi emisi listrik rumah
+      - cek emisi dari token listrik
+      - saya menggunakan listrik 300 kwh
+      - pemakaian listrik saya 155 kwh
+      - tolong hitung listrik 200 kwh
+      - emisi listrik saya berapa
+      - mau cek karbon listrik rumah
+      - hitungkan dampak pemakaian listrik saya
+      - saya ingin menghitung listrik
+      - karbon dari PLN
+
+  - intent: hitung_emisi_rumah_tangga
+    examples: |
+      - hitung emisi rumah tangga
+      - saya ingin menghitung emisi rumah
+      - hitung emisi gas rumah tangga
+      - cek jejak karbon rumah saya
+      - berapa emisi kegiatan rumah tangga
+      - saya mau menghitung karbon rumah tangga
+      - bantu hitung pemakaian LPG
+      - hitung emisi dari gas LPG
+      - berapa karbon dari aktivitas rumah saya
+      - kalkulasi emisi rumah tangga
+      - mau cek emisi LPG
+      - hitung karbon dari memasak
+      - emisi rumah saya berapa
+      - saya menggunakan gas LPG di rumah
+      - bantu cek jejak karbon rumah
+
+  - intent: batal
+    examples: |
+      - batal
+      - tidak jadi
+      - hentikan perhitungan
+      - batalkan perhitungan
+      - kembali ke menu
+      - saya mau mengulang
+      - mulai dari awal
+      - keluar dari perhitungan
+      - stop
+      - jangan lanjutkan
+      - saya salah memilih
+      - ulangi dari awal
+
+  - intent: out_of_scope
+    examples: |
+      - bagaimana cuaca hari ini
+      - siapa presiden sekarang
+      - rekomendasikan film untuk saya
+      - putarkan musik
+      - berapa harga sepatu
+      - saya ingin membeli pulsa
+      - buatkan saya puisi
+      - siapa yang menang sepak bola
+      - berapa hasil dua tambah dua
+      - pesan makanan untuk saya
+      - nyalakan lampu kamar
+      - ceritakan berita hari ini
+      - warna sepatu saya biru
+      - bagaimana cara memasak nasi goreng
+      - bantu saya mengirim email
+
+  - intent: inform
+    examples: |
+      - LPG
+      - CNG
+      - gas pipa
+      - kayu bakar
+      - tidak ada
+      - mobil bensin
+      - mobil diesel
+      - sepeda motor
+      - RON 98
+      - RON 92
+      - RON 90
+      - RON 88
+      - diesel
+      - listrik
+      - pesawat domestik
+      - pesawat internasional pendek
+      - pesawat internasional panjang
+      - kereta
+      - bus
+      - sapi
+      - ayam
+      - ikan
+      - nabati
+      - berdasarkan BBM
+      - berdasarkan jarak
+      - keduanya
+      - Solar CN48
+      - gas alam
+      - batubara
+      - Jawa-Bali
+      - Sumatra
+      - Kalimantan
+      - Sulawesi
+      - ekonomi
+      - bisnis
+      - first class
+      - eksekutif
+      - panoramic
+      - luxury
+      - priority
+      - compartment
+      - 0
+      - 12
+      - 155
+      - 155b
+      - 155 kWh
+      - 500 km
+      - 1000 liter
+      - 10 kg
+      - sekitar 250

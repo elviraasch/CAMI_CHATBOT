@@ -1,0 +1,65 @@
+{
+  "type": "MaxHistoryTrackerFeaturizer",
+  "state_featurizer": {
+    "action_texts": [],
+    "entity_tag_specs": [],
+    "feature_states": {
+      "intent": {
+        "ask_carbon_emission": 0,
+        "ask_carbon_offset": 1,
+        "back": 2,
+        "batal": 3,
+        "bot_challenge": 4,
+        "goodbye": 5,
+        "greet": 6,
+        "hitung_emisi": 7,
+        "hitung_emisi_listrik": 8,
+        "hitung_emisi_rumah_tangga": 9,
+        "hitung_emisi_transportasi": 10,
+        "nlu_fallback": 11,
+        "out_of_scope": 12,
+        "restart": 13,
+        "session_start": 14
+      },
+      "action_name": {
+        "action_listen": 0,
+        "action_restart": 1,
+        "action_session_start": 2,
+        "action_default_fallback": 3,
+        "action_deactivate_loop": 4,
+        "action_revert_fallback_events": 5,
+        "action_default_ask_affirmation": 6,
+        "action_default_ask_rephrase": 7,
+        "action_two_stage_fallback": 8,
+        "action_unlikely_intent": 9,
+        "action_back": 10,
+        "...": 11,
+        "action_extract_slots": 12,
+        "validate_listrik_form": 13,
+        "action_reset_listrik": 14,
+        "utter_ask_carbon_emission": 15,
+        "utter_ask_carbon_offset": 16,
+        "utter_ask_listrik_form_konsumsi_kwh": 17,
+        "utter_ask_listrik_form_wilayah_listrik": 18,
+        "utter_batal": 19,
+        "utter_fitur_rumah_tangga": 20,
+        "utter_fitur_transportasi": 21,
+        "utter_goodbye": 22,
+        "utter_greet": 23,
+        "utter_iamabot": 24,
+        "utter_out_of_scope": 25,
+        "utter_pilih_kategori": 26,
+        "utter_please_rephrase": 27,
+        "utter_ringkasan_listrik": 28,
+        "listrik_form": 29
+      },
+      "entities": {},
+      "slots": {},
+      "active_loop": {
+        "listrik_form": 0
+      }
+    }
+  },
+  "remove_duplicates": true,
+  "max_history": 5
+}

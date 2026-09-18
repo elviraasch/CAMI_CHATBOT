@@ -1,0 +1,13 @@
+{
+  "0": "ask_carbon_emission",
+  "1": "ask_carbon_offset",
+  "2": "batal",
+  "3": "bot_challenge",
+  "4": "goodbye",
+  "5": "greet",
+  "6": "hitung_emisi",
+  "7": "hitung_emisi_listrik",
+  "8": "hitung_emisi_rumah_tangga",
+  "9": "hitung_emisi_transportasi",
+  "10": "out_of_scope"
+}

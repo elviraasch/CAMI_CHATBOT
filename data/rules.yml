@@ -1,0 +1,127 @@
+version: "3.1"
+
+rules:
+  - rule: Tampilkan menu setelah salam
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - action: utter_pilih_kategori
+
+  - rule: Mulai kalkulator sesuai akun
+    steps:
+      - intent: hitung_emisi
+      - action: action_start_account_calculation
+  - rule: Mulai kalkulator dari permintaan listrik
+    steps:
+      - intent: hitung_emisi_listrik
+      - action: action_start_account_calculation
+  - rule: Mulai kalkulator dari permintaan transportasi
+    steps:
+      - intent: hitung_emisi_transportasi
+      - action: action_start_account_calculation
+  - rule: Mulai kalkulator dari permintaan rumah tangga
+    steps:
+      - intent: hitung_emisi_rumah_tangga
+      - action: action_start_account_calculation
+
+  - rule: Rekomendasikan proyek dari emisi tersimpan
+    condition:
+      - active_loop: null
+    steps:
+      - intent: ask_project_recommendation
+      - action: action_recommend_projects
+
+  - rule: Selesai kalkulator individu
+    condition:
+      - active_loop: personal_calculation_form
+    steps:
+      - action: personal_calculation_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_submit_calculation
+      - action: action_reset_calculation
+      - action: utter_pilih_kategori
+  - rule: Selesai kalkulator perusahaan
+    condition:
+      - active_loop: company_calculation_form
+    steps:
+      - action: company_calculation_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_submit_calculation
+      - action: action_reset_calculation
+      - action: utter_pilih_kategori
+
+  - rule: Batalkan kalkulator individu
+    condition:
+      - active_loop: personal_calculation_form
+    steps:
+      - intent: batal
+      - action: action_deactivate_loop
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_reset_calculation
+      - action: utter_batal
+      - action: utter_pilih_kategori
+  - rule: Batalkan kalkulator perusahaan
+    condition:
+      - active_loop: company_calculation_form
+    steps:
+      - intent: batal
+      - action: action_deactivate_loop
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_reset_calculation
+      - action: utter_batal
+      - action: utter_pilih_kategori
+
+  - rule: Proses nilai tidak dikenal dalam form individu
+    condition:
+      - active_loop: personal_calculation_form
+    steps:
+      - intent: nlu_fallback
+      - action: personal_calculation_form
+    wait_for_user_input: false
+  - rule: Proses nilai tidak dikenal dalam form perusahaan
+    condition:
+      - active_loop: company_calculation_form
+    steps:
+      - intent: nlu_fallback
+      - action: company_calculation_form
+    wait_for_user_input: false
+
+  - rule: Tanggapi pembatalan di luar form
+    condition:
+      - active_loop: null
+    steps:
+      - intent: batal
+      - action: utter_batal
+      - action: utter_pilih_kategori
+  - rule: Ucapkan salam perpisahan
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+  - rule: Jelaskan identitas Cami
+    steps:
+      - intent: bot_challenge
+      - action: utter_iamabot
+  - rule: Jelaskan carbon offset
+    steps:
+      - intent: ask_carbon_offset
+      - action: utter_ask_carbon_offset
+  - rule: Jelaskan emisi karbon
+    steps:
+      - intent: ask_carbon_emission
+      - action: utter_ask_carbon_emission
+  - rule: Tangani pesan yang tidak dipahami
+    steps:
+      - intent: nlu_fallback
+      - action: utter_please_rephrase
+  - rule: Tangani pesan di luar topik
+    steps:
+      - intent: out_of_scope
+      - action: utter_out_of_scope

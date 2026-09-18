@@ -1,0 +1,13 @@
+{
+  "lookup": {
+    "eJyLrq6NBQAEOAGx": "action_listen",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3BChdnB2fnFiUBFSSn5ZWnFpSWxsLAFGYIGc=": "utter_ask_carbon_offset",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3BChdnB2fnFiUBFSSn5ZWnFpSS8C80pKS1KJ4TG3EmBwLANHTQz0=": "action_listen",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3BChdnB2fnFiUBFSSn5ZWnFpSS8C80pKS1KJ4TG2Um0zApen5+SlJlam1tbEA3Otd4w==": "utter_goodbye",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3BChdnB2fnFiUBFSSn5ZWnFpSS8C80pKS1KJ4TG2Um0zApen5+SlJlanEuQ+mGLcpsQA0/3iZ": "action_listen",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3BChdnB2fnFiUBFSSmptZXAxUW1sbCwCTriFH": "utter_ask_carbon_emission",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3BChdnB2fnFiUBFSSmptZXAxUW0vAxNKSktSieGwaiTM9FgB7p0Xd": "action_listen",
+    "eJytjkEKgDAMBL/SB/iCfkWk1BI0aKMkqZfSvxvUo+DFW5adHdLX1rm6MxwhJsWNvKv3EShm8O4JK4oCGVsE2Bgki2q1LCFFHg2BjCLGtg9jUQUOb8M/7B//zqiFpsuGrQ0nJ2Zinw==": "utter_pilih_kategori",
+    "eJytjkEKg0AMRa8yB+gJvEopYSpBP2qUJONm8O6G6rIwXXSXT95//Gc9Hqluyjvl3rFKl+p1kOSFu3SHGeYswRZjDQYS0eNtE/VZ34HwArNgj4axuLPSt+I/7I29I7zI8LHht6EbZow0ZedhVbSMrxPSGYJT": "action_listen"
+  }
+}

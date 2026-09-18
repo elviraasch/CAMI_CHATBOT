@@ -1,0 +1,570 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - bot_challenge
+  - ask_carbon_offset
+  - ask_carbon_emission
+  - ask_project_recommendation
+  - hitung_emisi
+  - hitung_emisi_transportasi
+  - hitung_emisi_listrik
+  - hitung_emisi_rumah_tangga
+  - inform
+  - batal
+  - nlu_fallback
+  - out_of_scope
+
+slots:
+  account_type:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+  personal_energy_fuel:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: personal_calculation_form
+            requested_slot: personal_energy_fuel
+  personal_energy_qty:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: personal_calculation_form
+            requested_slot: personal_energy_qty
+  personal_vehicle_type:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: personal_calculation_form
+            requested_slot: personal_vehicle_type
+  personal_vehicle_fuel:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: personal_calculation_form
+            requested_slot: personal_vehicle_fuel
+  personal_vehicle_km:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: personal_calculation_form
+            requested_slot: personal_vehicle_km
+  personal_electricity_kwh:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: personal_calculation_form
+            requested_slot: personal_electricity_kwh
+  personal_transit_mode:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: personal_calculation_form
+            requested_slot: personal_transit_mode
+  personal_transit_km:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: personal_calculation_form
+            requested_slot: personal_transit_km
+  personal_food_type:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: personal_calculation_form
+            requested_slot: personal_food_type
+  personal_food_kg:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: personal_calculation_form
+            requested_slot: personal_food_kg
+  personal_water_m3:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: personal_calculation_form
+            requested_slot: personal_water_m3
+  personal_waste_kg:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: personal_calculation_form
+            requested_slot: personal_waste_kg
+
+  company_stationary_fuel:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_stationary_fuel
+  company_stationary_qty:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_stationary_qty
+  company_mobile_method:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_mobile_method
+  company_mobile_fuel:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_mobile_fuel
+  company_mobile_fuel_qty:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_mobile_fuel_qty
+  company_mobile_distance_fuel:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_mobile_distance_fuel
+  company_mobile_km:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_mobile_km
+  company_electricity_grid:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_electricity_grid
+  company_electricity_kwh:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_electricity_kwh
+  company_flight_class:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_flight_class
+  company_flight_pax:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_flight_pax
+  company_flight_km:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_flight_km
+  company_hotel_nights:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_hotel_nights
+  company_hotel_rooms:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_hotel_rooms
+  company_train_class:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_train_class
+  company_train_km:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_train_km
+
+responses:
+  utter_greet:
+    - text: "Halo! Aku Cami, asisten karbon CAMAR."
+    - text: "Hai! Cami siap membantu menghitung dan menjelaskan emisi karbon."
+    - text: "Selamat datang di CAMAR! Ada yang bisa Cami bantu?"
+
+  utter_pilih_kategori:
+    - text: "Pilih bantuan yang kamu butuhkan:"
+      buttons:
+        - title: "Mulai kalkulator akun saya"
+          payload: "hitung emisi"
+        - title: "Rekomendasi proyek"
+          payload: "/ask_project_recommendation"
+        - title: "Tentang emisi karbon"
+          payload: "apa itu emisi karbon"
+        - title: "Tentang carbon offset"
+          payload: "apa itu carbon offset"
+
+  utter_ask_personal_calculation_form_personal_energy_fuel:
+    - text: "Bahan bakar memasak atau energi rumah tangga apa yang paling sering kamu gunakan?"
+      buttons:
+        - title: "LPG"
+          payload: "LPG"
+        - title: "CNG / gas pipa"
+          payload: "CNG"
+        - title: "Kayu bakar"
+          payload: "Kayu bakar"
+        - title: "Tidak ada"
+          payload: "Tidak ada"
+  utter_ask_personal_calculation_form_personal_energy_qty:
+    - text: "Berapa pemakaian energi rumah tangga per bulan? LPG/kayu dalam kg, CNG dalam m3. Contoh: 12 kg."
+  utter_ask_personal_calculation_form_personal_vehicle_type:
+    - text: "Pilih kendaraan pribadi yang paling sering kamu gunakan:"
+      buttons:
+        - title: "Mobil bensin"
+          payload: "Mobil bensin"
+        - title: "Mobil diesel"
+          payload: "Mobil diesel"
+        - title: "Sepeda motor"
+          payload: "Sepeda motor"
+        - title: "Tidak ada"
+          payload: "Tidak ada"
+  utter_ask_personal_calculation_form_personal_vehicle_fuel:
+    - text: "Pilih bahan bakar kendaraan pribadimu:"
+      buttons:
+        - title: "RON 98"
+          payload: "RON 98"
+        - title: "RON 92"
+          payload: "RON 92"
+        - title: "RON 90"
+          payload: "RON 90"
+        - title: "RON 88"
+          payload: "RON 88"
+        - title: "Diesel"
+          payload: "Diesel"
+        - title: "Listrik"
+          payload: "Listrik"
+  utter_ask_personal_calculation_form_personal_vehicle_km:
+    - text: "Berapa kilometer jarak penggunaan kendaraan pribadi per bulan? Contoh: 500 km."
+  utter_ask_personal_calculation_form_personal_electricity_kwh:
+    - text: "Berapa konsumsi listrik rumahmu per bulan dalam kWh? Masukkan 0 jika tidak ada."
+  utter_ask_personal_calculation_form_personal_transit_mode:
+    - text: "Pilih transportasi umum yang paling ingin dimasukkan dalam estimasi tahunan:"
+      buttons:
+        - title: "Pesawat domestik"
+          payload: "Pesawat domestik"
+        - title: "Pesawat internasional pendek"
+          payload: "Pesawat internasional pendek"
+        - title: "Pesawat internasional panjang"
+          payload: "Pesawat internasional panjang"
+        - title: "Kereta"
+          payload: "Kereta"
+        - title: "Bus"
+          payload: "Bus"
+        - title: "Tidak ada"
+          payload: "Tidak ada"
+  utter_ask_personal_calculation_form_personal_transit_km:
+    - text: "Berapa total jarak transportasi tersebut per tahun dalam km?"
+  utter_ask_personal_calculation_form_personal_food_type:
+    - text: "Pilih kelompok makanan yang paling ingin dimasukkan ke estimasi:"
+      buttons:
+        - title: "Sapi / kambing"
+          payload: "Sapi"
+        - title: "Ayam"
+          payload: "Ayam"
+        - title: "Ikan"
+          payload: "Ikan"
+        - title: "Nabati"
+          payload: "Nabati"
+        - title: "Tidak ada"
+          payload: "Tidak ada"
+  utter_ask_personal_calculation_form_personal_food_kg:
+    - text: "Berapa kg makanan tersebut yang dikonsumsi per bulan?"
+  utter_ask_personal_calculation_form_personal_water_m3:
+    - text: "Berapa pemakaian air rumah tangga per bulan dalam m3? Masukkan 0 jika tidak ada."
+  utter_ask_personal_calculation_form_personal_waste_kg:
+    - text: "Berapa kg sampah rumah tangga yang dihasilkan per bulan? Masukkan 0 jika tidak ada."
+
+  utter_ask_company_calculation_form_company_stationary_fuel:
+    - text: "Scope 1 — pilih bahan bakar untuk pembakaran stasioner perusahaan:"
+      buttons:
+        - title: "Solar CN48"
+          payload: "Solar CN48"
+        - title: "Diesel"
+          payload: "Diesel"
+        - title: "RON 92"
+          payload: "RON 92"
+        - title: "LPG"
+          payload: "LPG"
+        - title: "Gas alam"
+          payload: "Gas alam"
+        - title: "Batubara"
+          payload: "Batubara"
+        - title: "Tidak ada"
+          payload: "Tidak ada"
+  utter_ask_company_calculation_form_company_stationary_qty:
+    - text: "Berapa konsumsi bahan bakar stasioner per tahun? Gunakan liter untuk BBM, kg untuk LPG/batubara, atau m3 untuk gas alam."
+  utter_ask_company_calculation_form_company_mobile_method:
+    - text: "Scope 1 — bagaimana kendaraan operasional akan dihitung?"
+      buttons:
+        - title: "Berdasarkan BBM"
+          payload: "Berdasarkan BBM"
+        - title: "Berdasarkan jarak"
+          payload: "Berdasarkan jarak"
+        - title: "Keduanya"
+          payload: "Keduanya"
+        - title: "Tidak ada"
+          payload: "Tidak ada"
+  utter_ask_company_calculation_form_company_mobile_fuel:
+    - text: "Pilih bahan bakar kendaraan operasional:"
+      buttons:
+        - title: "Solar CN48"
+          payload: "Solar CN48"
+        - title: "Diesel"
+          payload: "Diesel"
+        - title: "RON 92"
+          payload: "RON 92"
+        - title: "RON 90"
+          payload: "RON 90"
+        - title: "RON 88"
+          payload: "RON 88"
+  utter_ask_company_calculation_form_company_mobile_fuel_qty:
+    - text: "Berapa konsumsi bahan bakar kendaraan operasional per tahun?"
+  utter_ask_company_calculation_form_company_mobile_distance_fuel:
+    - text: "Untuk perhitungan berdasarkan jarak, pilih jenis bahan bakar kendaraan:"
+      buttons:
+        - title: "Diesel"
+          payload: "Diesel"
+        - title: "RON 92"
+          payload: "RON 92"
+        - title: "RON 90"
+          payload: "RON 90"
+        - title: "RON 88"
+          payload: "RON 88"
+  utter_ask_company_calculation_form_company_mobile_km:
+    - text: "Berapa total jarak kendaraan operasional per tahun dalam km?"
+  utter_ask_company_calculation_form_company_electricity_grid:
+    - text: "Scope 2 — pilih wilayah jaringan listrik perusahaan:"
+      buttons:
+        - title: "Jawa-Bali"
+          payload: "Jawa-Bali"
+        - title: "Sumatra"
+          payload: "Sumatra"
+        - title: "Kalimantan"
+          payload: "Kalimantan"
+        - title: "Sulawesi"
+          payload: "Sulawesi"
+        - title: "Tidak ada"
+          payload: "Tidak ada"
+  utter_ask_company_calculation_form_company_electricity_kwh:
+    - text: "Berapa konsumsi listrik perusahaan per tahun dalam kWh?"
+  utter_ask_company_calculation_form_company_flight_class:
+    - text: "Scope 3 — pilih kelas penerbangan dinas atau Tidak ada:"
+      buttons:
+        - title: "Ekonomi"
+          payload: "Ekonomi"
+        - title: "Bisnis"
+          payload: "Bisnis"
+        - title: "First Class"
+          payload: "First Class"
+        - title: "Tidak ada"
+          payload: "Tidak ada"
+  utter_ask_company_calculation_form_company_flight_pax:
+    - text: "Berapa jumlah penumpang penerbangan dinas selama setahun?"
+  utter_ask_company_calculation_form_company_flight_km:
+    - text: "Berapa total jarak penerbangan per penumpang selama setahun dalam km?"
+  utter_ask_company_calculation_form_company_hotel_nights:
+    - text: "Berapa total malam menginap untuk perjalanan dinas selama setahun? Masukkan 0 jika tidak ada."
+  utter_ask_company_calculation_form_company_hotel_rooms:
+    - text: "Berapa jumlah kamar hotel yang digunakan?"
+  utter_ask_company_calculation_form_company_train_class:
+    - text: "Pilih kelas perjalanan kereta dinas atau Tidak ada:"
+      buttons:
+        - title: "Ekonomi"
+          payload: "Ekonomi"
+        - title: "Bisnis"
+          payload: "Bisnis"
+        - title: "Eksekutif"
+          payload: "Eksekutif"
+        - title: "Panoramic"
+          payload: "Panoramic"
+        - title: "Luxury"
+          payload: "Luxury"
+        - title: "Priority"
+          payload: "Priority"
+        - title: "Compartment"
+          payload: "Compartment"
+        - title: "Tidak ada"
+          payload: "Tidak ada"
+  utter_ask_company_calculation_form_company_train_km:
+    - text: "Berapa total jarak perjalanan kereta dinas selama setahun dalam km?"
+
+  utter_batal:
+    - text: "Perhitungan dibatalkan. Data sementara sudah dibersihkan."
+    - text: "Baik, kita batalkan perhitungan ini dan kembali ke menu."
+  utter_please_rephrase:
+    - text: "Maaf, Cami belum memahami pesanmu. Coba tulis ulang atau pilih menu berikut."
+      buttons:
+        - title: "Mulai kalkulator akun saya"
+          payload: "hitung emisi"
+        - title: "Rekomendasi proyek"
+          payload: "/ask_project_recommendation"
+        - title: "Tentang carbon offset"
+          payload: "apa itu carbon offset"
+  utter_out_of_scope:
+    - text: "Topik itu berada di luar layanan Cami. Aku dapat membantu tentang emisi karbon, carbon offset, dan kalkulator CAMAR."
+      buttons:
+        - title: "Mulai kalkulator"
+          payload: "hitung emisi"
+        - title: "Rekomendasi proyek"
+          payload: "/ask_project_recommendation"
+        - title: "Tentang carbon offset"
+          payload: "apa itu carbon offset"
+  utter_goodbye:
+    - text: "Sampai jumpa! Semoga Cami membantu."
+    - text: "Terima kasih sudah menggunakan CAMAR."
+    - text: "Sampai bertemu kembali!"
+  utter_iamabot:
+    - text: "Aku Cami, chatbot CAMAR berbasis Rasa. Aku membantu menjelaskan carbon offset dan memandu perhitungan emisi."
+    - text: "Aku adalah Cami, asisten virtual CAMAR yang berjalan dengan Rasa."
+  utter_ask_carbon_offset:
+    - text: "Carbon offset adalah upaya mengimbangi emisi dengan mendukung proyek yang mengurangi atau menyerap emisi, seperti energi terbarukan dan penghijauan."
+    - text: "Carbon offset membantu menyeimbangkan jejak karbon melalui dukungan terhadap proyek pengurangan atau penyerapan emisi. Pengurangan emisi langsung tetap menjadi langkah utama."
+  utter_ask_carbon_emission:
+    - text: "Emisi karbon adalah pelepasan karbon dioksida dan gas rumah kaca lain dari aktivitas seperti penggunaan bahan bakar, listrik, transportasi, dan kegiatan rumah tangga."
+    - text: "Jejak karbon menggambarkan jumlah emisi gas rumah kaca dari aktivitas seseorang atau organisasi. Di CAMAR, hasilnya ditampilkan sebagai estimasi kg CO2e."
+
+actions:
+  - action_start_account_calculation
+  - action_recommend_projects
+  - validate_personal_calculation_form
+  - validate_company_calculation_form
+  - action_submit_calculation
+  - action_reset_calculation
+
+forms:
+  personal_calculation_form:
+    required_slots:
+      - personal_energy_fuel
+      - personal_energy_qty
+      - personal_vehicle_type
+      - personal_vehicle_fuel
+      - personal_vehicle_km
+      - personal_electricity_kwh
+      - personal_transit_mode
+      - personal_transit_km
+      - personal_food_type
+      - personal_food_kg
+      - personal_water_m3
+      - personal_waste_kg
+  company_calculation_form:
+    required_slots:
+      - company_stationary_fuel
+      - company_stationary_qty
+      - company_mobile_method
+      - company_mobile_fuel
+      - company_mobile_fuel_qty
+      - company_mobile_distance_fuel
+      - company_mobile_km
+      - company_electricity_grid
+      - company_electricity_kwh
+      - company_flight_class
+      - company_flight_pax
+      - company_flight_km
+      - company_hotel_nights
+      - company_hotel_rooms
+      - company_train_class
+      - company_train_km
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: false
