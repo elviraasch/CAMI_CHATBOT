@@ -1,7 +1,0 @@
-{
-  "rule_only_slots": [],
-  "rule_only_loops": [
-    "personal_calculation_form",
-    "company_calculation_form"
-  ]
-}

@@ -33,7 +33,8 @@ COMPANY_SLOTS = [
     "company_electricity_kwh",
     "company_flight_class",
     "company_flight_pax",
-    "company_flight_km",
+    "company_flight_origin",
+    "company_flight_destination",
     "company_hotel_nights",
     "company_hotel_rooms",
     "company_train_class",
@@ -42,6 +43,33 @@ COMPANY_SLOTS = [
 
 CALCULATION_SLOTS = PERSONAL_SLOTS + COMPANY_SLOTS
 NONE_ALIASES = ["none", "tidak ada", "tidak menggunakan", "lewati", "skip", "nol", "0"]
+
+ELECTRICITY_REGION_ALIASES = {
+    "jawa_bali": [
+        "jawa bali", "jawa", "bali", "jakarta", "dki jakarta", "jakarta pusat",
+        "jakarta utara", "jakarta selatan", "jakarta timur", "jakarta barat",
+        "banten", "tangerang", "serang", "jawa barat", "bandung", "bekasi",
+        "bogor", "depok", "cirebon", "tasikmalaya", "jawa tengah", "semarang",
+        "surakarta", "solo", "yogyakarta", "jogja", "jawa timur", "surabaya",
+        "malang", "kediri", "madiun", "jember", "banyuwangi", "denpasar",
+    ],
+    "sumatra": [
+        "sumatra", "sumatera", "aceh", "banda aceh", "sumatera utara", "medan",
+        "riau", "pekanbaru", "kepulauan riau", "kepri", "batam", "sumatera barat",
+        "padang", "jambi", "bengkulu", "sumatera selatan", "palembang", "lampung",
+        "bandar lampung", "bangka belitung", "pangkal pinang",
+    ],
+    "kalimantan": [
+        "kalimantan", "kalimantan barat", "pontianak", "kalimantan tengah",
+        "palangkaraya", "palangka raya", "kalimantan selatan", "banjarmasin",
+        "kalimantan timur", "samarinda", "balikpapan", "kalimantan utara", "tarakan",
+    ],
+    "sulawesi": [
+        "sulawesi", "sulawesi utara", "manado", "gorontalo", "sulawesi tengah",
+        "palu", "sulawesi barat", "mamuju", "sulawesi selatan", "makassar",
+        "sulawesi tenggara", "kendari",
+    ],
+}
 
 
 def _normalise(value: Any) -> str:
@@ -108,6 +136,68 @@ def _number_result(
         return {slot_name: None}
 
     return {slot_name: int(number) if integer else number}
+
+
+def _airport_code_result(
+    slot_name: str,
+    slot_value: Any,
+    dispatcher: CollectingDispatcher,
+) -> Dict[str, Any]:
+    if slot_value is None:
+        return {slot_name: None}
+
+    value = re.sub(r"\s+", " ", str(slot_value).strip())
+    code_match = re.fullmatch(r"([A-Za-z]{3})(?:\s*-\s*.+)?", value)
+    if code_match:
+        return {slot_name: code_match.group(1).upper()}
+
+    if len(value) < 2 or len(value) > 120 or not any(char.isalpha() for char in value):
+        dispatcher.utter_message(
+            text=(
+                "Masukkan kode IATA, nama kota/daerah, atau nama bandara. "
+                "Contoh: CGK, Jakarta, atau Bandara Soekarno-Hatta."
+            )
+        )
+        return {slot_name: None}
+
+    return {slot_name: value}
+
+
+def _electricity_grid_result(
+    slot_name: str,
+    slot_value: Any,
+    dispatcher: CollectingDispatcher,
+) -> Dict[str, Any]:
+    if slot_value is None:
+        return {slot_name: None}
+
+    value = _normalise(slot_value)
+    if value in [_normalise(alias) for alias in NONE_ALIASES]:
+        return {slot_name: "none"}
+
+    if value in {"lainnya", "daerah lain", "wilayah lain", "kota lain"}:
+        dispatcher.utter_message(
+            text="Silakan tulis nama kota, kabupaten, provinsi, atau pulaunya. Contoh: Jakarta, Palembang, atau Kalimantan Timur."
+        )
+        return {slot_name: None}
+
+    value = re.sub(r"^(?:kota|kabupaten|provinsi|pulau)\s+", "", value)
+    for canonical, aliases in ELECTRICITY_REGION_ALIASES.items():
+        normalised_aliases = sorted(
+            {_normalise(alias) for alias in aliases}, key=len, reverse=True
+        )
+        if value in normalised_aliases:
+            return {slot_name: canonical}
+        if any(re.search(rf"\b{re.escape(alias)}\b", value) for alias in normalised_aliases):
+            return {slot_name: canonical}
+
+    dispatcher.utter_message(
+        text=(
+            "Daerah itu belum dapat dipetakan. Tulis nama provinsi/kota lain atau "
+            "pilih jaringan Jawa-Bali, Sumatra, Kalimantan, atau Sulawesi."
+        )
+    )
+    return {slot_name: None}
 
 
 def _without(slots: List[Text], *removed: str) -> List[Text]:
@@ -328,7 +418,12 @@ class ValidateCompanyCalculationForm(FormValidationAction):
         if tracker.get_slot("company_electricity_grid") == "none":
             slots = _without(slots, "company_electricity_kwh")
         if tracker.get_slot("company_flight_class") == "none":
-            slots = _without(slots, "company_flight_pax", "company_flight_km")
+            slots = _without(
+                slots,
+                "company_flight_pax",
+                "company_flight_origin",
+                "company_flight_destination",
+            )
         if float(tracker.get_slot("company_hotel_nights") or 0) == 0:
             slots = _without(slots, "company_hotel_rooms")
         if tracker.get_slot("company_train_class") == "none":
@@ -426,19 +521,7 @@ class ValidateCompanyCalculationForm(FormValidationAction):
         return _number_result("company_mobile_km", value, dispatcher, "12000 km")
 
     def validate_company_electricity_grid(self, value, dispatcher, tracker, domain):
-        return _option_result(
-            "company_electricity_grid",
-            value,
-            {
-                "jawa_bali": ["jawa bali", "jawa", "bali"],
-                "sumatra": ["sumatera"],
-                "kalimantan": [],
-                "sulawesi": [],
-                "none": NONE_ALIASES,
-            },
-            dispatcher,
-            "Pilih Jawa-Bali, Sumatra, Kalimantan, Sulawesi, atau Tidak ada.",
-        )
+        return _electricity_grid_result("company_electricity_grid", value, dispatcher)
 
     def validate_company_electricity_kwh(self, value, dispatcher, tracker, domain):
         return _number_result("company_electricity_kwh", value, dispatcher, "50000 kWh")
@@ -462,8 +545,11 @@ class ValidateCompanyCalculationForm(FormValidationAction):
             "company_flight_pax", value, dispatcher, "10 orang", integer=True
         )
 
-    def validate_company_flight_km(self, value, dispatcher, tracker, domain):
-        return _number_result("company_flight_km", value, dispatcher, "1500 km")
+    def validate_company_flight_origin(self, value, dispatcher, tracker, domain):
+        return _airport_code_result("company_flight_origin", value, dispatcher)
+
+    def validate_company_flight_destination(self, value, dispatcher, tracker, domain):
+        return _airport_code_result("company_flight_destination", value, dispatcher)
 
     def validate_company_hotel_nights(self, value, dispatcher, tracker, domain):
         return _number_result(
@@ -526,7 +612,8 @@ class ActionSubmitCalculation(Action):
                 "electricity_kwh": tracker.get_slot("company_electricity_kwh") or 0,
                 "flight_class": tracker.get_slot("company_flight_class") or "none",
                 "flight_pax": tracker.get_slot("company_flight_pax") or 0,
-                "flight_km": tracker.get_slot("company_flight_km") or 0,
+                "flight_origin": tracker.get_slot("company_flight_origin") or "",
+                "flight_destination": tracker.get_slot("company_flight_destination") or "",
                 "hotel_nights": tracker.get_slot("company_hotel_nights") or 0,
                 "hotel_rooms": tracker.get_slot("company_hotel_rooms") or 0,
                 "train_class": tracker.get_slot("company_train_class") or "none",

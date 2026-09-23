@@ -51,7 +51,7 @@ dipakai tanpa login dan tidak memerlukan model Rasa baru atau API AI. Jawaban
 harga memakai satuan **Rp per ton kredit karbon**. Tiga proyek teratas
 untuk pertanyaan harga, stok, penjualan, atau daftar ditampilkan sebagai kartu dengan
 tautan ke halaman detail. Kode pemilihan
-pertanyaan dan kueri ada di `camarTA/app/Services/ChatbotProjectQueryService.php`.
+pertanyaan dan kueri ada di `camarweb/app/Services/ChatbotProjectQueryService.php`.
 Untuk jenis pertanyaan baru, tambahkan pola dan cara mengambil datanya di sana.
 Pertanyaan yang belum punya pola atau data pendukung tetap ditangani Rasa dan
 bisa menghasilkan pesan bahwa Cami belum memahami pertanyaan.
@@ -89,6 +89,21 @@ setelah pesanan baru berhasil.
 - Buyer perusahaan: Scope 1 (pembakaran stasioner dan kendaraan operasional),
   Scope 2 (listrik), serta Scope 3 (pesawat, hotel, dan kereta).
 
+Untuk penerbangan dinas perusahaan, Cami meminta kelas kabin, jumlah penumpang,
+bandara asal, dan bandara tujuan. Pengguna dapat menulis kode IATA (`CGK`), nama
+kota/daerah (`Jakarta`), atau nama bandara (`Bandara Soekarno-Hatta`). Laravel
+menyelesaikan input tersebut menjadi bandara pada tabel `airports_data`, lalu
+menghitung jarak dengan rumus Haversine yang sama dengan halaman `/kalkulator`.
+Rumus emisinya adalah `jumlah penumpang ? jarak penerbangan ? faktor kelas kabin`.
+Faktor kelas kabin: Ekonomi 0,133; Bisnis 0,266; dan First Class 0,399 kg
+CO2e/penumpang-km.
+
+Wilayah listrik perusahaan dapat dipilih berdasarkan jaringan atau ditulis sebagai
+nama kota/provinsi. Contohnya, `Jakarta` dan `Bandung` dipetakan ke Jawa-Bali,
+sedangkan `Palembang` dipetakan ke Sumatra. Tombol **Lainnya** meminta nama daerah.
+Daerah yang belum dikenali harus dipetakan pengguna ke Jawa-Bali, Sumatra,
+Kalimantan, atau Sulawesi karena hanya empat faktor itulah yang tersedia di
+`/kalkulator`.
 Tipe akun selalu dibaca ulang dari database Laravel. Nilai tipe akun dari browser
 tidak digunakan sebagai penentu perhitungan.
 
@@ -99,7 +114,7 @@ Jalankan setiap perintah pada terminal PowerShell yang berbeda.
 ### 1. Laravel
 
 ```powershell
-cd C:\Users\USER\Downloads\camarTA\camarTA
+cd C:\Users\USER\Downloads\TA\camarweb
 php artisan migrate
 php artisan serve --host=127.0.0.1 --port=8000
 ```
@@ -107,7 +122,7 @@ php artisan serve --host=127.0.0.1 --port=8000
 ### 2. Rasa action server
 
 ```powershell
-cd C:\Users\USER\Downloads\camarTA\chatbotTA
+cd C:\Users\USER\Downloads\TA\chatbot
 .\venv\Scripts\python.exe -m rasa run actions --port 5055
 ```
 
@@ -119,8 +134,8 @@ lama harus di-restart agar memakai kode baru.
 ### 3. Rasa server
 
 ```powershell
-cd C:\Users\USER\Downloads\camarTA\chatbotTA
-.\venv\Scripts\python.exe -m rasa run --model models\20260918-182743-sweet-fortress.tar.gz --enable-api --cors "*" --port 5005
+cd C:\Users\USER\Downloads\TA\chatbot
+.\venv\Scripts\python.exe -m rasa run --enable-api --cors "*" --port 5005
 ```
 
 Setelah ketiga server aktif, buka `http://127.0.0.1:8000`, masuk sebagai buyer,
@@ -143,7 +158,7 @@ lagi dari tombol **Mulai kalkulator akun saya**.
 ## Setelah mengubah data Rasa
 
 ```powershell
-cd C:\Users\USER\Downloads\camarTA\chatbotTA
+cd C:\Users\USER\Downloads\TA\chatbot
 .\venv\Scripts\python.exe -m rasa data validate
 .\venv\Scripts\python.exe -m rasa train
 ```
@@ -173,8 +188,9 @@ air 10 m3/bulan, dan sampah 5 kg/bulan, hasilnya **3.346,06 kg CO2e**.
 
 Jika buyer perusahaan memasukkan diesel stasioner 1.000 liter/tahun,
 kendaraan RON 92 sebanyak 100 liter serta diesel 1.000 km, listrik Sumatra
-1.000 kWh, penerbangan ekonomi 2 penumpang × 1.000 km, hotel 2 malam ×
-3 kamar, dan kereta ekonomi 1.000 km, hasilnya **4.732,91 kg CO2e**.
+1.000 kWh, penerbangan ekonomi CGK ke DPS untuk 2 penumpang, hotel 2 malam ×
+3 kamar, dan kereta ekonomi 1.000 km, jarak penerbangannya **982,61 km** dan
+total hasilnya **4.728,28 kg CO2e**.
 
 Jawaban terakhir diproses Laravel setelah Rasa membalas. Karena itu action
 server tidak mengirim permintaan balik ke Laravel saat Laravel masih menunggu
@@ -183,10 +199,10 @@ Rasa; alur ini menghindari timeout 90 detik pada `php artisan serve`.
 ## Menjalankan tes
 
 ```powershell
-cd C:\Users\USER\Downloads\camarTA\camarTA
+cd C:\Users\USER\Downloads\TA\camarweb
 php artisan test tests\Unit\CarbonCalculationServiceTest.php tests\Feature\ChatbotCalculationTest.php
 
-cd C:\Users\USER\Downloads\camarTA\chatbotTA
+cd C:\Users\USER\Downloads\TA\chatbot
 .\venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
@@ -194,7 +210,7 @@ Untuk memeriksa alur penuh Rasa → Laravel → database → rekomendasi, jalank
 setelah ketiga server aktif:
 
 ```powershell
-cd C:\Users\USER\Downloads\camarTA\camarTA
+cd C:\Users\USER\Downloads\TA\camarweb
 php tests\smoke_chatbot_result.php
 ```
 
@@ -211,7 +227,7 @@ dan pelatihan ulang model; Cami tidak memakai API AI untuk menjawab bebas.
 Untuk menguji tombol rekomendasi secara terpisah dari Rasa, jalankan:
 
 ```powershell
-cd C:\Users\USER\Downloads\camarTA\camarTA
+cd C:\Users\USER\Downloads\TA\camarweb
 php tests\smoke_chatbot_recommendation.php
 ```
 
@@ -222,7 +238,7 @@ dan pilihan awal, lalu melakukan rollback. Hasilnya harus menunjukkan
 Untuk memeriksa jawaban katalog terhadap harga dan stok di database:
 
 ```powershell
-cd C:\Users\USER\Downloads\camarTA\camarTA
+cd C:\Users\USER\Downloads\TA\camarweb
 php tests\smoke_chatbot_project_catalog.php
 ```
 
@@ -231,6 +247,6 @@ Tes katalog juga memakai transaksi dan melakukan rollback.
 Untuk menguji pencarian proyek termurah berdasarkan sisa emisi dashboard:
 
 ```powershell
-cd C:\Users\USER\Downloads\camarTA\camarTA
+cd C:\Users\USER\Downloads\TA\camarweb
 php tests\smoke_chatbot_cheapest_offset.php
 ```

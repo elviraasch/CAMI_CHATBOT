@@ -6,6 +6,8 @@ from rasa_sdk.executor import CollectingDispatcher
 from actions.actions import (
     ActionRecommendProjects,
     ActionSubmitCalculation,
+    _airport_code_result,
+    _electricity_grid_result,
     _number_result,
     _option_result,
 )
@@ -83,6 +85,64 @@ class ActionValidationTest(unittest.TestCase):
 
         self.assertEqual(result, {"company_electricity_grid": "jawa_bali"})
 
+    def test_airport_code_is_normalised(self):
+        dispatcher = CollectingDispatcher()
+
+        result = _airport_code_result(
+            "company_flight_origin", "cgk", dispatcher
+        )
+
+        self.assertEqual(result, {"company_flight_origin": "CGK"})
+        self.assertEqual(dispatcher.messages, [])
+
+    def test_invalid_airport_code_is_rejected(self):
+        dispatcher = CollectingDispatcher()
+
+        result = _airport_code_result(
+            "company_flight_destination", "12345", dispatcher
+        )
+
+        self.assertEqual(result, {"company_flight_destination": None})
+        self.assertTrue(dispatcher.messages)
+
+    def test_airport_city_or_name_is_accepted(self):
+        dispatcher = CollectingDispatcher()
+
+        city = _airport_code_result("company_flight_origin", "Jakarta", dispatcher)
+        airport = _airport_code_result(
+            "company_flight_destination", "Bandara Ngurah Rai", dispatcher
+        )
+
+        self.assertEqual(city, {"company_flight_origin": "Jakarta"})
+        self.assertEqual(
+            airport, {"company_flight_destination": "Bandara Ngurah Rai"}
+        )
+        self.assertEqual(dispatcher.messages, [])
+
+    def test_electricity_city_is_mapped_to_calculator_grid(self):
+        dispatcher = CollectingDispatcher()
+
+        jakarta = _electricity_grid_result(
+            "company_electricity_grid", "Jakarta Selatan", dispatcher
+        )
+        palembang = _electricity_grid_result(
+            "company_electricity_grid", "Kota Palembang", dispatcher
+        )
+
+        self.assertEqual(jakarta, {"company_electricity_grid": "jawa_bali"})
+        self.assertEqual(palembang, {"company_electricity_grid": "sumatra"})
+        self.assertEqual(dispatcher.messages, [])
+
+    def test_other_electricity_region_requests_a_place_name(self):
+        dispatcher = CollectingDispatcher()
+
+        result = _electricity_grid_result(
+            "company_electricity_grid", "Lainnya", dispatcher
+        )
+
+        self.assertEqual(result, {"company_electricity_grid": None})
+        self.assertIn("tulis nama", dispatcher.messages[0]["text"])
+
     def test_personal_form_submits_all_activity_categories(self):
         values = {
             "account_type": "personal",
@@ -129,7 +189,8 @@ class ActionValidationTest(unittest.TestCase):
             "company_electricity_kwh": 1000,
             "company_flight_class": "economy",
             "company_flight_pax": 2,
-            "company_flight_km": 1000,
+            "company_flight_origin": "CGK",
+            "company_flight_destination": "DPS",
             "company_hotel_nights": 2,
             "company_hotel_rooms": 3,
             "company_train_class": "ekonomi",
@@ -149,6 +210,8 @@ class ActionValidationTest(unittest.TestCase):
         self.assertEqual(request["data"]["mobile_km"], 1000)
         self.assertEqual(request["data"]["electricity_kwh"], 1000)
         self.assertEqual(request["data"]["flight_pax"], 2)
+        self.assertEqual(request["data"]["flight_origin"], "CGK")
+        self.assertEqual(request["data"]["flight_destination"], "DPS")
         self.assertEqual(request["data"]["hotel_nights"], 2)
         self.assertEqual(request["data"]["train_km"], 1000)
 

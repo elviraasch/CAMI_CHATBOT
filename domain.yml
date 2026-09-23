@@ -230,15 +230,24 @@ slots:
         conditions:
           - active_loop: company_calculation_form
             requested_slot: company_flight_pax
-  company_flight_km:
-    type: float
+  company_flight_origin:
+    type: text
     influence_conversation: false
     mappings:
       - type: from_text
         not_intent: batal
         conditions:
           - active_loop: company_calculation_form
-            requested_slot: company_flight_km
+            requested_slot: company_flight_origin
+  company_flight_destination:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_flight_destination
   company_hotel_nights:
     type: float
     influence_conversation: false
@@ -433,8 +442,10 @@ responses:
   utter_ask_company_calculation_form_company_mobile_km:
     - text: "Berapa total jarak kendaraan operasional per tahun dalam km?"
   utter_ask_company_calculation_form_company_electricity_grid:
-    - text: "Scope 2 — pilih wilayah jaringan listrik perusahaan:"
+    - text: "Scope 2 - pilih wilayah jaringan listrik atau tulis nama kota/provinsi perusahaan:"
       buttons:
+        - title: "Jakarta"
+          payload: "Jakarta"
         - title: "Jawa-Bali"
           payload: "Jawa-Bali"
         - title: "Sumatra"
@@ -443,6 +454,8 @@ responses:
           payload: "Kalimantan"
         - title: "Sulawesi"
           payload: "Sulawesi"
+        - title: "Lainnya"
+          payload: "Lainnya"
         - title: "Tidak ada"
           payload: "Tidak ada"
   utter_ask_company_calculation_form_company_electricity_kwh:
@@ -460,8 +473,10 @@ responses:
           payload: "Tidak ada"
   utter_ask_company_calculation_form_company_flight_pax:
     - text: "Berapa jumlah penumpang penerbangan dinas selama setahun?"
-  utter_ask_company_calculation_form_company_flight_km:
-    - text: "Berapa total jarak penerbangan per penumpang selama setahun dalam km?"
+  utter_ask_company_calculation_form_company_flight_origin:
+    - text: "Masukkan kode IATA, nama kota/daerah, atau nama bandara asal. Contoh: CGK, Jakarta, atau Bandara Soekarno-Hatta."
+  utter_ask_company_calculation_form_company_flight_destination:
+    - text: "Masukkan kode IATA, nama kota/daerah, atau nama bandara tujuan. Contoh: DPS, Bali, atau Bandara Ngurah Rai."
   utter_ask_company_calculation_form_company_hotel_nights:
     - text: "Berapa total malam menginap untuk perjalanan dinas selama setahun? Masukkan 0 jika tidak ada."
   utter_ask_company_calculation_form_company_hotel_rooms:
@@ -559,7 +574,8 @@ forms:
       - company_electricity_kwh
       - company_flight_class
       - company_flight_pax
-      - company_flight_km
+      - company_flight_origin
+      - company_flight_destination
       - company_hotel_nights
       - company_hotel_rooms
       - company_train_class
