@@ -117,6 +117,76 @@ rules:
     steps:
       - intent: ask_carbon_emission
       - action: utter_ask_carbon_emission
+  - rule: Jelaskan CO2e
+    steps:
+      - intent: ask_co2e
+      - action: utter_ask_co2e
+  - rule: Jelaskan sumber emisi
+    steps:
+      - intent: ask_emission_sources
+      - action: utter_ask_emission_sources
+  - rule: Jelaskan scope emisi
+    steps:
+      - intent: ask_emission_scopes
+      - action: utter_ask_emission_scopes
+  - rule: Beri panduan pengurangan emisi
+    steps:
+      - intent: ask_emission_reduction
+      - action: utter_ask_emission_reduction
+  - rule: Bedakan offset dan pengurangan
+    steps:
+      - intent: ask_offset_vs_reduction
+      - action: utter_ask_offset_vs_reduction
+  - rule: Jelaskan verifikasi proyek secara umum
+    steps:
+      - intent: ask_project_verification_general
+      - action: utter_ask_project_verification_general
+
+  - rule: Ambil informasi proyek dari CAMAR
+    condition:
+      - active_loop: null
+    steps:
+      - intent: ask_project_information
+      - action: action_project_information
+  - rule: Periksa status verifikasi proyek
+    condition:
+      - active_loop: null
+    steps:
+      - intent: ask_project_verification_status
+      - action: action_project_verification
+  - rule: Jelaskan alasan rekomendasi
+    condition:
+      - active_loop: null
+    steps:
+      - intent: ask_recommendation_reason
+      - action: action_explain_recommendation
+  - rule: Jelaskan hasil emisi terakhir
+    condition:
+      - active_loop: null
+    steps:
+      - intent: ask_result_explanation
+      - action: action_explain_latest_emission
+
+  - rule: Tampilkan panduan CAMAR
+    steps:
+      - intent: guide_camar
+      - action: utter_guide_camar
+  - rule: Tampilkan panduan kalkulator
+    steps:
+      - intent: guide_calculator
+      - action: utter_guide_calculator
+  - rule: Tampilkan panduan hasil dan riwayat emisi
+    steps:
+      - intent: guide_emission_history
+      - action: utter_guide_emission_history
+  - rule: Tampilkan panduan memilih proyek
+    steps:
+      - intent: guide_project_selection
+      - action: utter_guide_project_selection
+  - rule: Tampilkan panduan sertifikat
+    steps:
+      - intent: guide_certificate
+      - action: utter_guide_certificate
   - rule: Tangani pesan yang tidak dipahami
     steps:
       - intent: nlu_fallback

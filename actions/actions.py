@@ -679,3 +679,76 @@ class ActionRecommendProjects(Action):
             json_message={"type": "project_recommendation_request"}
         )
         return []
+
+
+def _request_application_data(
+    dispatcher: CollectingDispatcher, tracker: Tracker, request_type: Text
+) -> List[Any]:
+    """Ask Laravel to enrich the Rasa response using current CAMAR data."""
+    dispatcher.utter_message(
+        json_message={
+            "type": request_type,
+            "query": tracker.latest_message.get("text", ""),
+        }
+    )
+    return []
+
+
+class ActionExplainLatestEmission(Action):
+    def name(self) -> Text:
+        return "action_explain_latest_emission"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Any]:
+        return _request_application_data(
+            dispatcher, tracker, "emission_explanation_request"
+        )
+
+
+class ActionProjectInformation(Action):
+    def name(self) -> Text:
+        return "action_project_information"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Any]:
+        return _request_application_data(
+            dispatcher, tracker, "project_information_request"
+        )
+
+
+class ActionProjectVerification(Action):
+    def name(self) -> Text:
+        return "action_project_verification"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Any]:
+        return _request_application_data(
+            dispatcher, tracker, "project_verification_request"
+        )
+
+
+class ActionExplainRecommendation(Action):
+    def name(self) -> Text:
+        return "action_explain_recommendation"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Any]:
+        return _request_application_data(
+            dispatcher, tracker, "recommendation_explanation_request"
+        )

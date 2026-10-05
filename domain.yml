@@ -6,6 +6,21 @@ intents:
   - bot_challenge
   - ask_carbon_offset
   - ask_carbon_emission
+  - ask_co2e
+  - ask_emission_sources
+  - ask_emission_scopes
+  - ask_emission_reduction
+  - ask_offset_vs_reduction
+  - ask_project_verification_general
+  - ask_project_information
+  - ask_project_verification_status
+  - ask_recommendation_reason
+  - ask_result_explanation
+  - guide_camar
+  - guide_calculator
+  - guide_emission_history
+  - guide_project_selection
+  - guide_certificate
   - ask_project_recommendation
   - hitung_emisi
   - hitung_emisi_transportasi
@@ -538,9 +553,55 @@ responses:
     - text: "Emisi karbon adalah pelepasan karbon dioksida dan gas rumah kaca lain dari aktivitas seperti penggunaan bahan bakar, listrik, transportasi, dan kegiatan rumah tangga."
     - text: "Jejak karbon menggambarkan jumlah emisi gas rumah kaca dari aktivitas seseorang atau organisasi. Di CAMAR, hasilnya ditampilkan sebagai estimasi kg CO2e."
 
+  utter_ask_co2e:
+    - text: "CO2 adalah satu jenis gas rumah kaca. CO2e atau karbon dioksida ekuivalen adalah satuan yang menyetarakan dampak berbagai gas rumah kaca terhadap pemanasan global ke dampak CO2. Karena itu hasil CAMAR ditampilkan dalam kg atau ton CO2e. Sumber konsep: IPCC Glossary dan GHG Protocol."
+
+  utter_ask_emission_sources:
+    - text: "Sumber emisi yang dihitung CAMAR mencakup energi rumah tangga, kendaraan, listrik, transportasi umum, makanan, air, limbah, pembakaran stasioner perusahaan, kendaraan operasional, penerbangan, hotel, dan kereta. Daftar ini mengikuti ruang lingkup kalkulator CAMAR; aktivitas lain mungkin juga menghasilkan emisi. Sumber pengelompokan: GHG Protocol."
+
+  utter_ask_emission_scopes:
+    - text: "Scope 1 adalah emisi langsung dari sumber yang dimiliki atau dikendalikan, misalnya bahan bakar dan kendaraan operasional. Scope 2 adalah emisi tidak langsung dari listrik atau energi yang dibeli. Scope 3 adalah emisi tidak langsung lainnya, misalnya perjalanan dinas, hotel, kereta, makanan, air, dan limbah. Sumber: GHG Protocol Corporate Standard dan Scope 3 Standard."
+
+  utter_ask_emission_reduction:
+    - text: "Mulailah dari aktivitas dengan kontribusi terbesar. Untuk listrik, kurangi konsumsi dan gunakan peralatan efisien. Untuk kendaraan, kurangi perjalanan, berbagi kendaraan, atau gunakan transportasi umum. Untuk bahan bakar, tingkatkan efisiensi dan beralih ke energi lebih rendah emisi. Untuk makanan dan limbah, kurangi pemborosan serta pilah sampah. Setelah menghitung emisi, tanyakan 'jelaskan hasil emisi saya' agar Cami menunjukkan aktivitas terbesar. Sumber panduan umum: IEA Energy Efficiency dan United Nations ActNow."
+
+  utter_ask_offset_vs_reduction:
+    - text: "Pengurangan emisi berarti menurunkan emisi dari aktivitas sendiri, sedangkan offset mengimbangi emisi tersisa melalui kredit dari proyek lain. Urutan yang disarankan adalah ukur emisi, kurangi sebanyak mungkin, lalu offset emisi yang belum dapat dihindari. Membeli offset tidak menghapus catatan emisi awal. Sumber konsep: GHG Protocol dan Oxford Principles for Net Zero Aligned Carbon Offsetting."
+
+  utter_ask_project_verification_general:
+    - text: "Verifikasi proyek adalah pemeriksaan terhadap klaim pengurangan atau penyerapan emisi berdasarkan metodologi dan standar tertentu. Nama standar saja belum selalu membuktikan sertifikat proyek; bukti perlu berupa nomor, dokumen, atau tautan registri yang dapat diperiksa. Untuk proyek tertentu, sebutkan nama proyeknya dan Cami hanya akan menyampaikan data serta bukti yang tersedia di CAMAR."
+
+  utter_guide_camar:
+    - text: "Cami dapat membantu: menjelaskan emisi dan carbon offset, memandu kalkulator, menjelaskan hasil emisi terakhir, memberi rekomendasi, mencari informasi serta status verifikasi proyek, dan menjelaskan penggunaan dashboard, riwayat transaksi, serta sertifikat. Pilih topik berikut atau tulis pertanyaanmu."
+      buttons:
+        - title: "Panduan kalkulator"
+          payload: "bagaimana cara menggunakan kalkulator"
+        - title: "Hasil dan dashboard"
+          payload: "bagaimana melihat hasil emisi di dashboard"
+        - title: "Memilih proyek"
+          payload: "bagaimana cara memilih proyek"
+        - title: "Sertifikat CAMAR"
+          payload: "bagaimana mendapatkan sertifikat offset"
+
+  utter_guide_calculator:
+    - text: "Buka menu Kalkulator, lalu isi aktivitas pada setiap scope sampai halaman Hasil. Pada halaman Hasil, periksa rincian dan pilih Simpan Hasil ke Dashboard. Kamu juga dapat menulis 'hitung emisi' kepada Cami; Cami akan memakai form sesuai tipe akun dan menyimpan hasil secara otomatis setelah perhitungan selesai."
+
+  utter_guide_emission_history:
+    - text: "Masuk sebagai buyer lalu buka Dashboard untuk melihat total dan rincian hasil emisi terbaru. Hasil yang selesai dihitung melalui Cami juga disimpan ke akunmu. Saat ini halaman Riwayat Buyer berisi riwayat transaksi dan proyek, sedangkan daftar lengkap seluruh perhitungan lama belum ditampilkan sebagai halaman tersendiri."
+
+  utter_guide_project_selection:
+    - text: "Buka menu Proyek, lalu gunakan pencarian atau pengurutan. Periksa kategori, lokasi, harga per ton, stok, pengelola, metodologi, standar, dan bukti yang tersedia pada halaman detail. Jika sudah memiliki hasil emisi, minta 'rekomendasi proyek' agar CAMAR membandingkan proyek dengan profil emisimu. Setelah memilih jumlah kredit, tambahkan ke keranjang dan lanjutkan checkout."
+
+  utter_guide_certificate:
+    - text: "Sertifikat offset CAMAR ditampilkan pada Dashboard setelah transaksi selesai diverifikasi dan berstatus selesai. Di sana tersedia nomor sertifikat dan tombol unduh jika sertifikat sudah diterbitkan. Jika belum tersedia, periksa status transaksi pada Riwayat Buyer; pembelian yang masih menunggu pembayaran atau verifikasi belum memperoleh sertifikat."
+
 actions:
   - action_start_account_calculation
   - action_recommend_projects
+  - action_explain_latest_emission
+  - action_project_information
+  - action_project_verification
+  - action_explain_recommendation
   - validate_personal_calculation_form
   - validate_company_calculation_form
   - action_submit_calculation

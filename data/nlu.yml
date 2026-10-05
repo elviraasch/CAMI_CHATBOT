@@ -70,6 +70,203 @@ nlu:
       - apa dampak emisi karbon
       - bagaimana karbon dihasilkan
 
+  - intent: ask_co2e
+    examples: |
+      - apa itu CO2e
+      - apa arti CO2 ekuivalen
+      - jelaskan CO2e
+      - CO2e itu maksudnya apa
+      - apa bedanya CO2 dan CO2e
+      - mengapa hasil emisi memakai CO2e
+      - satuan CO2e itu apa
+      - apa kepanjangan CO2e
+      - kenapa gas rumah kaca disetarakan menjadi CO2e
+      - jelaskan karbon dioksida ekuivalen
+
+  - intent: ask_emission_sources
+    examples: |
+      - aktivitas apa saja yang menghasilkan emisi
+      - apa sumber emisi rumah tangga
+      - kegiatan perusahaan apa yang menghasilkan emisi
+      - dari aktivitas apa jejak karbon berasal
+      - sumber emisi terbesar biasanya apa
+      - apa saja penyebab emisi dari kehidupan sehari hari
+      - apakah listrik menghasilkan emisi
+      - apakah makanan termasuk sumber emisi
+      - transportasi menghasilkan emisi dari mana
+      - sebutkan kategori aktivitas penghasil emisi
+
+  - intent: ask_emission_scopes
+    examples: |
+      - apa itu scope 1 2 dan 3
+      - jelaskan scope emisi
+      - apa perbedaan scope 1 scope 2 dan scope 3
+      - listrik masuk scope berapa
+      - kendaraan operasional masuk scope apa
+      - penerbangan dinas termasuk scope berapa
+      - jelaskan cakupan emisi perusahaan
+      - mengapa emisi dibagi menjadi tiga scope
+      - apa arti emisi langsung dan tidak langsung
+      - contoh aktivitas scope 1 scope 2 scope 3
+
+  - intent: ask_emission_reduction
+    examples: |
+      - bagaimana cara mengurangi emisi
+      - apa yang dapat saya lakukan untuk menurunkan jejak karbon
+      - cara mengurangi emisi listrik
+      - bagaimana menghemat emisi dari kendaraan
+      - tips mengurangi emisi rumah tangga
+      - bagaimana perusahaan dapat mengurangi emisi
+      - tindakan apa yang bisa menekan emisi karbon
+      - saran pengurangan emisi transportasi
+      - bagaimana mengurangi emisi dari sampah
+      - beri saya tips rendah karbon
+
+  - intent: ask_offset_vs_reduction
+    examples: |
+      - apakah offset sama dengan mengurangi emisi
+      - apa beda carbon offset dan pengurangan emisi
+      - sebaiknya mengurangi emisi atau membeli offset
+      - apakah membeli kredit karbon membuat emisi hilang
+      - apakah offset menggantikan upaya pengurangan emisi
+      - beda mitigasi langsung dan offset
+      - kapan saya perlu melakukan offset
+      - apakah cukup hanya membeli carbon offset
+      - hubungan pengurangan emisi dengan offset apa
+      - kenapa emisi harus dikurangi sebelum offset
+
+  - intent: ask_project_verification_general
+    examples: |
+      - apa itu verifikasi proyek karbon
+      - apa arti proyek terverifikasi
+      - bagaimana proyek carbon offset diverifikasi
+      - apa fungsi standar pada proyek karbon
+      - apa itu VCS dan Gold Standard
+      - mengapa proyek offset perlu sertifikasi
+      - apa bukti bahwa proyek offset dapat dipercaya
+      - siapa yang memverifikasi proyek karbon
+      - jelaskan sertifikasi proyek carbon offset
+      - apakah semua proyek karbon pasti tersertifikasi
+
+  - intent: ask_project_information
+    examples: |
+      - jelaskan informasi proyek mangrove riau
+      - proyek rehabilitasi mangrove berada di mana
+      - siapa pengelola proyek surya jawa
+      - berapa harga dan stok proyek mangrove
+      - apa kategori proyek hutan kalimantan
+      - tampilkan detail proyek blue carbon
+      - saya ingin tahu lokasi proyek energi surya
+      - proyek biomassa dikelola oleh siapa
+      - apa metodologi proyek mangrove pesisir jawa
+      - berikan informasi tentang proyek konservasi hutan
+      - detail dari proyek ini apa saja
+      - cari informasi proyek carbon offset tertentu
+
+  - intent: ask_project_verification_status
+    examples: |
+      - apakah proyek mangrove riau sudah diverifikasi
+      - apakah proyek surya jawa memiliki sertifikat
+      - apa standar proyek blue carbon
+      - tunjukkan bukti verifikasi proyek mangrove
+      - status verifikasi proyek hutan kalimantan bagaimana
+      - apakah sertifikat proyek biomassa tersedia
+      - proyek rehabilitasi mangrove memakai standar apa
+      - apakah dokumen verifikasi proyek ini dapat dilihat
+      - tahun berapa proyek konservasi itu diverifikasi
+      - cek sertifikasi proyek energi terbarukan
+
+  - intent: ask_recommendation_reason
+    examples: |
+      - mengapa proyek ini direkomendasikan kepada saya
+      - kenapa saya mendapat rekomendasi proyek mangrove
+      - apa alasan proyek surya cocok untuk saya
+      - bagaimana skor rekomendasi proyek dihitung
+      - dasar rekomendasi proyek saya apa
+      - mengapa skor kecocokan proyek ini tinggi
+      - jelaskan alasan pemilihan proyek carbon offset saya
+      - faktor apa yang digunakan untuk rekomendasi proyek
+      - kenapa Cami memilih proyek tersebut
+      - jelaskan kecocokan rekomendasi dengan emisi saya
+
+  - intent: ask_result_explanation
+    examples: |
+      - jelaskan hasil emisi saya
+      - apa arti angka emisi di dashboard saya
+      - bagian emisi saya yang paling besar apa
+      - aktivitas mana yang paling banyak menghasilkan emisi saya
+      - tolong analisis hasil kalkulator terakhir saya
+      - jelaskan scope terbesar dari emisi saya
+      - berapa total emisi terakhir saya dan artinya
+      - bantu saya memahami hasil perhitungan emisi
+      - rincian emisi terakhir saya bagaimana
+      - apa yang harus saya kurangi dari hasil emisi saya
+
+  - intent: guide_camar
+    examples: |
+      - Cami bisa membantu apa saja
+      - fitur CAMAR apa saja yang bisa dijelaskan
+      - bagaimana cara menggunakan CAMAR
+      - saya butuh panduan website CAMAR
+      - tampilkan bantuan penggunaan website
+      - menu apa saja yang tersedia di CAMAR
+      - beri saya panduan layanan CAMAR
+      - apa saja layanan yang dapat saya gunakan
+      - bagaimana alur menggunakan website ini
+      - bantu saya memahami fitur CAMAR
+
+  - intent: guide_calculator
+    examples: |
+      - bagaimana cara menggunakan kalkulator
+      - bagaimana menghitung emisi di website CAMAR
+      - di mana halaman kalkulator
+      - panduan mengisi kalkulator emisi
+      - bagaimana menyimpan hasil perhitungan
+      - langkah menghitung emisi perusahaan
+      - cara menghitung emisi individu
+      - saya bingung mengisi kalkulator
+      - bagaimana mengulang perhitungan emisi
+      - apa yang harus diisi pada kalkulator
+
+  - intent: guide_emission_history
+    examples: |
+      - bagaimana melihat riwayat emisi
+      - di mana hasil kalkulasi saya tersimpan
+      - cara melihat total emisi di dashboard
+      - apakah hasil perhitungan masuk ke profil
+      - bagaimana membuka hasil emisi terakhir
+      - di mana saya dapat melihat rincian scope
+      - cara memeriksa kalkulasi sebelumnya
+      - apakah hasil chatbot tersimpan di dashboard
+      - bagaimana melihat jejak karbon akun saya
+      - letak riwayat perhitungan emisi di mana
+
+  - intent: guide_project_selection
+    examples: |
+      - bagaimana cara memilih proyek
+      - panduan mencari proyek carbon offset
+      - bagaimana membeli proyek yang direkomendasikan
+      - di mana daftar proyek tersedia
+      - cara membandingkan harga proyek
+      - bagaimana melihat detail proyek
+      - langkah memilih proyek untuk offset
+      - cara memasukkan proyek ke keranjang
+      - bagaimana memesan kredit karbon
+      - apa yang harus diperiksa sebelum memilih proyek
+
+  - intent: guide_certificate
+    examples: |
+      - bagaimana mendapatkan sertifikat offset
+      - di mana melihat sertifikat pembelian saya
+      - kapan sertifikat diterbitkan
+      - bagaimana mengunduh sertifikat CAMAR
+      - apa syarat memperoleh sertifikat offset
+      - sertifikat transaksi ada di mana
+      - kenapa sertifikat saya belum tersedia
+      - bagaimana melihat nomor sertifikat
+      - apakah pembelian kredit mendapat sertifikat
+      - panduan sertifikat carbon offset CAMAR
+
   - intent: ask_project_recommendation
     examples: |
       - rekomendasikan proyek offset untuk saya
