@@ -16,6 +16,11 @@ intents:
   - ask_project_verification_status
   - ask_recommendation_reason
   - ask_result_explanation
+  - ask_carbon_balance
+  - simulate_offset_purchase
+  - compare_projects
+  - ask_personal_action_plan
+  - ask_purchase_disclosure
   - guide_camar
   - guide_calculator
   - guide_emission_history
@@ -311,12 +316,14 @@ responses:
       buttons:
         - title: "Mulai kalkulator akun saya"
           payload: "hitung emisi"
+        - title: "Cek saldo karbon"
+          payload: "berapa sisa emisi saya"
         - title: "Rekomendasi proyek"
           payload: "/ask_project_recommendation"
-        - title: "Tentang emisi karbon"
-          payload: "apa itu emisi karbon"
-        - title: "Tentang carbon offset"
-          payload: "apa itu carbon offset"
+        - title: "Rencana pengurangan"
+          payload: "buatkan rencana pengurangan emisi saya"
+        - title: "Panduan lengkap Cami"
+          payload: "Cami bisa membantu apa saja"
 
   utter_ask_personal_calculation_form_personal_energy_fuel:
     - text: "Bahan bakar memasak atau energi rumah tangga apa yang paling sering kamu gunakan?"
@@ -572,16 +579,18 @@ responses:
     - text: "Verifikasi proyek adalah pemeriksaan terhadap klaim pengurangan atau penyerapan emisi berdasarkan metodologi dan standar tertentu. Nama standar saja belum selalu membuktikan sertifikat proyek; bukti perlu berupa nomor, dokumen, atau tautan registri yang dapat diperiksa. Untuk proyek tertentu, sebutkan nama proyeknya dan Cami hanya akan menyampaikan data serta bukti yang tersedia di CAMAR."
 
   utter_guide_camar:
-    - text: "Cami dapat membantu: menjelaskan emisi dan carbon offset, memandu kalkulator, menjelaskan hasil emisi terakhir, memberi rekomendasi, mencari informasi serta status verifikasi proyek, dan menjelaskan penggunaan dashboard, riwayat transaksi, serta sertifikat. Pilih topik berikut atau tulis pertanyaanmu."
+    - text: "Cami dapat membantu menghitung dan menjelaskan emisi, mengecek saldo karbon setelah pembelian, membuat simulasi offset, menjelaskan biaya dan risiko sebelum transaksi, menyusun tiga prioritas pengurangan, membandingkan proyek, memberi rekomendasi beserta alasannya, serta mengambil informasi proyek dari database CAMAR. Pilih topik berikut atau tulis pertanyaanmu."
       buttons:
+        - title: "Saldo karbon saya"
+          payload: "berapa sisa emisi saya"
+        - title: "Simulasi offset"
+          payload: "simulasikan pembelian 1 ton kredit karbon"
         - title: "Panduan kalkulator"
           payload: "bagaimana cara menggunakan kalkulator"
-        - title: "Hasil dan dashboard"
-          payload: "bagaimana melihat hasil emisi di dashboard"
-        - title: "Memilih proyek"
-          payload: "bagaimana cara memilih proyek"
-        - title: "Sertifikat CAMAR"
-          payload: "bagaimana mendapatkan sertifikat offset"
+        - title: "Rencana pengurangan"
+          payload: "buatkan rencana pengurangan emisi saya"
+        - title: "Info sebelum membeli"
+          payload: "jelaskan informasi sebelum membeli proyek"
 
   utter_guide_calculator:
     - text: "Buka menu Kalkulator, lalu isi aktivitas pada setiap scope sampai halaman Hasil. Pada halaman Hasil, periksa rincian dan pilih Simpan Hasil ke Dashboard. Kamu juga dapat menulis 'hitung emisi' kepada Cami; Cami akan memakai form sesuai tipe akun dan menyimpan hasil secara otomatis setelah perhitungan selesai."
@@ -599,9 +608,14 @@ actions:
   - action_start_account_calculation
   - action_recommend_projects
   - action_explain_latest_emission
+  - action_carbon_balance
+  - action_simulate_offset_purchase
+  - action_compare_projects
+  - action_personal_action_plan
   - action_project_information
   - action_project_verification
   - action_explain_recommendation
+  - action_purchase_disclosure
   - validate_personal_calculation_form
   - validate_company_calculation_form
   - action_submit_calculation

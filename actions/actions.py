@@ -752,3 +752,78 @@ class ActionExplainRecommendation(Action):
         return _request_application_data(
             dispatcher, tracker, "recommendation_explanation_request"
         )
+
+
+class ActionCarbonBalance(Action):
+    def name(self) -> Text:
+        return "action_carbon_balance"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Any]:
+        return _request_application_data(
+            dispatcher, tracker, "carbon_balance_request"
+        )
+
+
+class ActionSimulateOffsetPurchase(Action):
+    def name(self) -> Text:
+        return "action_simulate_offset_purchase"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Any]:
+        return _request_application_data(
+            dispatcher, tracker, "offset_simulation_request"
+        )
+
+
+class ActionCompareProjects(Action):
+    def name(self) -> Text:
+        return "action_compare_projects"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Any]:
+        return _request_application_data(
+            dispatcher, tracker, "project_comparison_request"
+        )
+
+
+class ActionPurchaseDisclosure(Action):
+    def name(self) -> Text:
+        return "action_purchase_disclosure"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Any]:
+        return _request_application_data(
+            dispatcher, tracker, "purchase_disclosure_request"
+        )
+
+
+class ActionPersonalActionPlan(Action):
+    def name(self) -> Text:
+        return "action_personal_action_plan"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Any]:
+        return _request_application_data(
+            dispatcher, tracker, "personal_action_plan_request"
+        )

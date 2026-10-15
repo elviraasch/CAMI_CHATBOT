@@ -167,6 +167,41 @@ rules:
       - intent: ask_result_explanation
       - action: action_explain_latest_emission
 
+  - rule: Tampilkan saldo karbon akun
+    condition:
+      - active_loop: null
+    steps:
+      - intent: ask_carbon_balance
+      - action: action_carbon_balance
+
+  - rule: Simulasikan pembelian kredit karbon
+    condition:
+      - active_loop: null
+    steps:
+      - intent: simulate_offset_purchase
+      - action: action_simulate_offset_purchase
+
+  - rule: Bandingkan proyek karbon
+    condition:
+      - active_loop: null
+    steps:
+      - intent: compare_projects
+      - action: action_compare_projects
+
+  - rule: Jelaskan informasi sebelum membeli proyek
+    condition:
+      - active_loop: null
+    steps:
+      - intent: ask_purchase_disclosure
+      - action: action_purchase_disclosure
+
+  - rule: Susun rencana pengurangan personal
+    condition:
+      - active_loop: null
+    steps:
+      - intent: ask_personal_action_plan
+      - action: action_personal_action_plan
+
   - rule: Tampilkan panduan CAMAR
     steps:
       - intent: guide_camar
