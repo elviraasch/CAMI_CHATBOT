@@ -219,47 +219,50 @@ class ActionStartAccountCalculation(Action):
         domain: Dict[Text, Any],
     ) -> List[Any]:
         metadata = tracker.latest_message.get("metadata") or {}
+        is_authenticated = metadata.get("authenticated", False)
         account_type = metadata.get("account_type")
 
-        if (
-            not metadata.get("authenticated")
-            or metadata.get("role") != "buyer"
-            or account_type not in {"personal", "company"}
-        ):
-            dispatcher.utter_message(
-                text=(
-                    "Silakan masuk menggunakan akun buyer individu atau perusahaan "
-                    "agar Cami dapat memilih kalkulator dan menyimpan hasilmu."
+        # Jika sudah login, ikuti akun aslinya
+        if is_authenticated and account_type in {"personal", "company"}:
+            events: List[Any] = _reset_events()
+            events.extend([SlotSet("account_type", account_type)])
+            
+            if account_type == "company":
+                dispatcher.utter_message(
+                    text="Cami akan mengumpulkan data aktivitas perusahaan (Scope 1, Scope 2, dan Scope 3). Pilih “Tidak ada” atau masukkan 0 untuk aktivitas yang tidak digunakan."
                 )
-            )
-            return _reset_events()
-
-        events: List[Any] = _reset_events()
-        events.extend([
-            SlotSet("account_type", account_type),
-        ])
-
-        if account_type == "company":
-            dispatcher.utter_message(
-                text=(
-                    "Akun perusahaan terdeteksi. Cami akan mengumpulkan data "
-                    "Scope 1, Scope 2, dan Scope 3. Pilih “Tidak ada” atau masukkan "
-                    "0 untuk aktivitas yang tidak digunakan."
+                events.append(FollowupAction("company_calculation_form"))
+            else:
+                dispatcher.utter_message(
+                    text="Cami akan menghitung emisi dari energi rumah tangga, kendaraan, listrik, transportasi umum, pangan, air, dan sampah dalam periode tahunan."
                 )
-            )
-            events.append(FollowupAction("company_calculation_form"))
-        else:
-            dispatcher.utter_message(
-                text=(
-                    "Akun individu terdeteksi. Cami akan menghitung energi rumah "
-                    "tangga, kendaraan, listrik, transportasi umum, pangan, air, "
-                    "dan sampah dalam periode tahunan."
-                )
-            )
-            events.append(FollowupAction("personal_calculation_form"))
+                events.append(FollowupAction("personal_calculation_form"))
+            return events
 
-        return events
+        dispatcher.utter_message(
+            text="Kamu belum masuk (login). Ingin menghitung emisi sebagai individu atau perusahaan?",
+            buttons=[
+                {"title": "Individu", "payload": "hitung emisi individu"},
+                {"title": "Perusahaan", "payload": "hitung emisi perusahaan"}
+            ]
+        )
+        return _reset_events()
 
+class ActionStartGuestPersonal(Action):
+    def name(self) -> Text:
+        return "action_start_guest_personal"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message(text="Cami akan menghitung emisi dari energi rumah tangga, kendaraan, listrik, transportasi umum, pangan, air, dan sampah dalam periode tahunan (Sesi Tamu).")
+        return [SlotSet("account_type", "personal"), FollowupAction("personal_calculation_form")]
+
+class ActionStartGuestCompany(Action):
+    def name(self) -> Text:
+        return "action_start_guest_company"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message(text="Cami akan mengumpulkan data aktivitas perusahaan (Scope 1, Scope 2, dan Scope 3) untuk Sesi Tamu.")
+        return [SlotSet("account_type", "company"), FollowupAction("company_calculation_form")]
 
 class ValidatePersonalCalculationForm(FormValidationAction):
     def name(self) -> Text:
@@ -753,77 +756,61 @@ class ActionExplainRecommendation(Action):
             dispatcher, tracker, "recommendation_explanation_request"
         )
 
-
 class ActionCarbonBalance(Action):
     def name(self) -> Text:
         return "action_carbon_balance"
 
-    def run(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Any]:
-        return _request_application_data(
-            dispatcher, tracker, "carbon_balance_request"
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        dispatcher.utter_message(
+            text="Berikut adalah informasi saldo karbon akun Anda:",
+            custom={"type": "carbon_balance_request"}
         )
+        return []
 
 
 class ActionSimulateOffsetPurchase(Action):
     def name(self) -> Text:
         return "action_simulate_offset_purchase"
 
-    def run(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Any]:
-        return _request_application_data(
-            dispatcher, tracker, "offset_simulation_request"
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        dispatcher.utter_message(
+            text="Silakan tentukan jumlah ton kredit yang ingin disimulasikan.",
+            custom={"type": "offset_simulation_request", "query": tracker.latest_message.get("text")}
         )
+        return []
 
 
 class ActionCompareProjects(Action):
     def name(self) -> Text:
         return "action_compare_projects"
 
-    def run(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Any]:
-        return _request_application_data(
-            dispatcher, tracker, "project_comparison_request"
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        dispatcher.utter_message(
+            text="Berikut adalah perbandingan proyek yang tersedia:",
+            custom={"type": "project_comparison_request", "query": tracker.latest_message.get("text")}
         )
+        return []
 
 
 class ActionPurchaseDisclosure(Action):
     def name(self) -> Text:
         return "action_purchase_disclosure"
 
-    def run(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Any]:
-        return _request_application_data(
-            dispatcher, tracker, "purchase_disclosure_request"
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        dispatcher.utter_message(
+            text="Berikut adalah rincian biaya, risiko, dan ketentuan sebelum membeli:",
+            custom={"type": "purchase_disclosure_request", "query": tracker.latest_message.get("text")}
         )
+        return []
 
 
 class ActionPersonalActionPlan(Action):
     def name(self) -> Text:
         return "action_personal_action_plan"
 
-    def run(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Any]:
-        return _request_application_data(
-            dispatcher, tracker, "personal_action_plan_request"
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        dispatcher.utter_message(
+            text="Berikut adalah rencana prioritas pengurangan emisi Anda:",
+            custom={"type": "personal_action_plan_request"}
         )
+        return []

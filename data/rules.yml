@@ -230,3 +230,12 @@ rules:
     steps:
       - intent: out_of_scope
       - action: utter_out_of_scope
+  - rule: Pilih kalkulator guest sebagai individu
+    steps:
+    - intent: hitung_emisi_individu
+    - action: action_start_guest_personal
+
+  - rule: Pilih kalkulator guest sebagai perusahaan
+    steps:
+      - intent: hitung_emisi_perusahaan
+      - action: action_start_guest_company

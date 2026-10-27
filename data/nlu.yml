@@ -162,18 +162,6 @@ nlu:
       - berikan informasi tentang proyek konservasi hutan
       - detail dari proyek ini apa saja
       - cari informasi proyek carbon offset tertentu
-      - berapa luas area proyek mangrove riau
-      - berapa ton CO2 yang dikurangi proyek ini per tahun
-      - berapa keluarga yang mendapat manfaat dari proyek ini
-      - berapa lama durasi proyek tersebut
-      - tahun berapa proyek ini diverifikasi
-      - apa dampak lingkungan dan sosial proyek ini
-      - stok kredit proyek ini masih berapa
-      - berapa harga kredit proyek ini per ton
-      - jelaskan metode yang digunakan proyek ini
-      - proyek ini milik perusahaan apa
-      - apa manfaat proyek Mangrove Blue Carbon Riau
-      - sebutkan kategori lokasi standar dan vintage proyek
 
   - intent: ask_project_verification_status
     examples: |
@@ -213,111 +201,6 @@ nlu:
       - bantu saya memahami hasil perhitungan emisi
       - rincian emisi terakhir saya bagaimana
       - apa yang harus saya kurangi dari hasil emisi saya
-
-  - intent: ask_carbon_balance
-    examples: |
-      - berapa sisa emisi saya
-      - cek saldo karbon saya
-      - berapa emisi yang belum saya offset
-      - apakah emisi saya sudah habis di-offset
-      - tampilkan sisa offset saya
-      - setelah membeli proyek berapa sisa emisi saya
-      - pembelian saya sudah mengurangi berapa emisi
-      - berapa total emisi dan offset saya sekarang
-      - cek progres offset akun saya
-      - kredit yang sudah saya beli berapa ton
-      - masih perlu offset berapa ton
-      - apakah pesanan saya sudah masuk ke saldo karbon
-      - lihat neraca karbon saya
-      - sisa jejak karbon di dashboard berapa
-      - berapa persen emisi saya sudah di-offset
-
-  - intent: simulate_offset_purchase
-    examples: |
-      - simulasikan pembelian 1 ton kredit karbon
-      - kalau saya beli 2 ton proyek mangrove sisa emisinya berapa
-      - hitung simulasi offset 3 ton
-      - berapa sisa emisi jika beli 5 ton kredit
-      - simulasi beli proyek Mangrove Blue Carbon Riau sebanyak 2 ton
-      - coba hitung pembelian 4 ton proyek ini
-      - sebelum checkout saya ingin simulasi offset
-      - bantu simulasi pembelian kredit karbon
-      - jika saya offset 10 ton apakah emisi saya habis
-      - prediksi saldo setelah membeli 3 ton
-      - simulasi proyek offset untuk emisi saya
-      - apa dampaknya kalau membeli 1 ton proyek mangrove
-      - hitung sisa emisi setelah rencana pembelian saya
-
-  - intent: compare_projects
-    examples: |
-      - bandingkan dua proyek karbon
-      - bandingkan proyek Mangrove Blue Carbon Riau dan Rehabilitasi Mangrove Pesisir Jawa
-      - mana yang lebih murah antara dua proyek ini
-      - proyek A dibanding proyek B bagaimana
-      - saya ingin membandingkan proyek offset
-      - apa perbedaan proyek mangrove dan energi terbarukan
-      - bandingkan harga stok dan standar proyek
-      - tolong buat perbandingan dua proyek
-      - mana proyek yang lebih cocok untuk saya
-      - perbandingan Mangrove Blue Carbon Riau versus proyek lainnya
-      - compare dua proyek yang tersedia
-      - pilih mana dari dua proyek ini
-      - bandingkan dampak kedua proyek
-      - beda metodologi dua proyek apa
-
-  - intent: ask_purchase_disclosure
-    examples: |
-      - apa yang harus saya ketahui sebelum membeli proyek
-      - jelaskan informasi sebelum saya menekan tombol beli
-      - berapa harga total dan biaya tambahan proyek ini
-      - apakah pembelian kredit karbon dikenakan PPN
-      - cek subtotal pajak dan total proyek Mangrove Blue Carbon Riau
-      - apa risiko membeli proyek offset ini
-      - jelaskan ketentuan transaksi proyek karbon
-      - adakah biaya lain saat checkout proyek
-      - berapa total bayar untuk 2 ton proyek mangrove riau
-      - cek biaya 3 ton proyek Rehabilitasi Mangrove Pesisir Jawa
-      - apa syarat sebelum membeli kredit karbon
-      - bagaimana aturan pembatalan dan pengembalian dana
-      - kapan pembelian mulai mengurangi saldo emisi
-      - apakah pesanan pending sudah dihitung sebagai offset
-      - apakah stok dan harga bisa berubah sebelum bayar
-      - metode pembayarannya melalui apa
-      - tolong tampilkan risiko harga dan ketentuan pembelian
-      - periksa biaya dan syarat transaksi proyek rekomendasi
-      - sebelum beli saya ingin tahu PPN dan totalnya
-      - informasi penting sebelum checkout proyek ini apa saja
-      - cek biaya 2 ton proyek Mangrove Blue Carbon Riau
-      - cek biaya satu ton proyek mangrove
-      - hitung total bayar dua ton proyek offset
-      - estimasi biaya beli 2 ton carbon credit
-      - kalau beli satu ton biayanya berapa
-      - berapa subtotal dan PPN untuk satu ton
-      - tampilkan harga akhir setelah pajak
-      - jelaskan biaya checkout proyek yang direkomendasikan
-      - saya mau tahu total transaksi sebelum membeli
-      - berapa uang yang harus dibayar termasuk PPN
-
-  - intent: ask_personal_action_plan
-    examples: |
-      - buatkan rencana pengurangan emisi saya
-      - apa tiga prioritas untuk menurunkan emisi saya
-      - berikan langkah pengurangan berdasarkan hasil saya
-      - aktivitas apa yang harus saya kurangi dulu
-      - susun action plan karbon saya
-      - saya harus mulai mengurangi emisi dari mana
-      - buat rekomendasi aksi dari kalkulasi terakhir
-      - beri saya rencana rendah karbon
-      - target pengurangan emisi saya bagaimana
-      - langkah paling berdampak untuk akun saya
-      - bantu susun prioritas penghematan emisi
-      - carbon coach untuk hasil emisi saya
-      - apa tindakan selanjutnya setelah menghitung emisi
-      - apa yang harus saya kurangi lebih dulu dari emisi saya
-      - dari hasil saya emisi mana yang perlu dikurangi dulu
-      - beri tindakan berdasarkan penyumbang emisi terbesar saya
-      - buat tiga langkah dari emisi yang sudah tersimpan
-      - prioritas pengurangan berdasarkan dashboard saya
 
   - intent: guide_camar
     examples: |
@@ -561,3 +444,48 @@ nlu:
       - 1000 liter
       - 10 kg
       - sekitar 250
+
+  - intent: ask_carbon_balance
+    examples: |
+      - berapa sisa emisi saya
+      - saldo karbon
+      - cek sisa emisi
+      - berapa emisi yang belum di offset
+      - tampilkan saldo karbon
+
+  - intent: simulate_offset_purchase
+    examples: |
+      - simulasikan pembelian 1 ton kredit karbon
+      - simulasi offset
+      - simulasikan beli kredit
+      - simulasi pembelian
+
+  - intent: compare_projects
+    examples: |
+      - bandingkan dua proyek karbon
+      - bandingkan proyek
+      - komparasi proyek karbon
+
+  - intent: ask_purchase_disclosure
+    examples: |
+      - jelaskan biaya risiko dan ketentuan sebelum membeli proyek
+      - info sebelum beli
+      - syarat pembelian proyek
+
+  - intent: ask_personal_action_plan
+    examples: |
+      - buatkan rencana pengurangan emisi saya
+      - carbon coach
+      - prioritas pengurangan personal
+
+  - intent: hitung_emisi_individu
+    examples: |
+      - hitung emisi individu
+      - sebagai individu
+      - akun individu
+
+  - intent: hitung_emisi_perusahaan
+    examples: |
+      - hitung emisi perusahaan
+      - sebagai perusahaan
+      - akun perusahaan
