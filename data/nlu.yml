@@ -302,6 +302,14 @@ nlu:
       - bagaimana cara menghitung emisi saya
       - saya ingin tahu jumlah emisi saya
       - cek total emisi saya
+      - bagaimana cara menghitung jejak karbon saya
+      - bagaimana cara menghitung emisi saya
+      - bagaimana menghitung
+      - bagaimana hitung 
+      - bantu hitung emisi saya
+      - bantu hitung
+      - menghitung
+      - hitung
 
   - intent: hitung_emisi_transportasi
     examples: |
@@ -373,6 +381,11 @@ nlu:
       - jangan lanjutkan
       - saya salah memilih
       - ulangi dari awal
+      - saya ingin mengulang
+      - yang lain 
+      - saya ingin menghitung lagi
+      - bukan itu 
+      - salah 
 
   - intent: out_of_scope
     examples: |
@@ -391,6 +404,9 @@ nlu:
       - warna sepatu saya biru
       - bagaimana cara memasak nasi goreng
       - bantu saya mengirim email
+      - apa arti hidup
+      - siapa penulis novel ini
+      - 
 
   - intent: inform
     examples: |

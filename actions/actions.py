@@ -222,11 +222,9 @@ class ActionStartAccountCalculation(Action):
         is_authenticated = metadata.get("authenticated", False)
         account_type = metadata.get("account_type")
 
-        # Jika sudah login, ikuti akun aslinya
+        # Jika user sudah login, arahkan langsung sesuai tipe akunnya
         if is_authenticated and account_type in {"personal", "company"}:
-            events: List[Any] = _reset_events()
-            events.extend([SlotSet("account_type", account_type)])
-            
+            events: List[Any] = [SlotSet("account_type", account_type)]
             if account_type == "company":
                 dispatcher.utter_message(
                     text="Cami akan mengumpulkan data aktivitas perusahaan (Scope 1, Scope 2, dan Scope 3). Pilih “Tidak ada” atau masukkan 0 untuk aktivitas yang tidak digunakan."
@@ -239,6 +237,7 @@ class ActionStartAccountCalculation(Action):
                 events.append(FollowupAction("personal_calculation_form"))
             return events
 
+        # Jika belum login (guest), tanyakan apakah ingin menghitung sebagai individu atau perusahaan
         dispatcher.utter_message(
             text="Kamu belum masuk (login). Ingin menghitung emisi sebagai individu atau perusahaan?",
             buttons=[
@@ -246,7 +245,7 @@ class ActionStartAccountCalculation(Action):
                 {"title": "Perusahaan", "payload": "hitung emisi perusahaan"}
             ]
         )
-        return _reset_events()
+        return []
 
 class ActionStartGuestPersonal(Action):
     def name(self) -> Text:
@@ -263,7 +262,7 @@ class ActionStartGuestCompany(Action):
     def run(self, dispatcher, tracker, domain):
         dispatcher.utter_message(text="Cami akan mengumpulkan data aktivitas perusahaan (Scope 1, Scope 2, dan Scope 3) untuk Sesi Tamu.")
         return [SlotSet("account_type", "company"), FollowupAction("company_calculation_form")]
-
+    
 class ValidatePersonalCalculationForm(FormValidationAction):
     def name(self) -> Text:
         return "validate_personal_calculation_form"
@@ -668,18 +667,22 @@ class ActionRecommendProjects(Action):
         domain: Dict[Text, Any],
     ) -> List[Any]:
         metadata = tracker.latest_message.get("metadata") or {}
-        if (
-            not metadata.get("authenticated")
-            or metadata.get("role") != "buyer"
-            or metadata.get("account_type") not in {"personal", "company"}
-        ):
-            dispatcher.utter_message(
-                text="Masuk sebagai buyer terlebih dahulu untuk melihat rekomendasi proyekmu."
-            )
-            return []
+        is_authenticated = metadata.get("authenticated", False)
+        
+        # Ambil total emisi dari slot atau sesi jika tersimpan
+        # (Atau fallback ke kalkulasi sementara guest jika ada)
+        total_kg = tracker.get_slot("total_kg") or 1250.00 # Contoh ambil dari slot atau nilai default guest
+
+        # Ambil daftar proyek dari database/service CAMAR berdasarkan total emisi
+        recommendations = _fetch_projects_matching_emission(total_kg)
 
         dispatcher.utter_message(
-            json_message={"type": "project_recommendation_request"}
+            text="Berikut adalah proyek offset yang direkomendasikan berdasarkan hasil estimasi emisi kamu:",
+            custom={
+                "type": "recommendation_result",
+                "source": "guest_calculation" if not is_authenticated else "profile",
+                "recommendations": recommendations
+            }
         )
         return []
 
