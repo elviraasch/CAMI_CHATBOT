@@ -267,16 +267,22 @@ document.addEventListener('DOMContentLoaded', () => {
         title.textContent = 'Total emisi tahunan';
         summary.appendChild(title);
 
+        const totalTon = Number(result.total_kg) / 1000;
         const total = document.createElement('div');
         total.className = 'cami-result-total';
-        total.textContent = `${formatKg(result.total_kg)} kg CO2e`;
+        // Tampilkan dalam format ton jika lebih dari 1 ton, agar sinkron dengan web
+        total.textContent = totalTon >= 1 
+            ? `${totalTon.toFixed(3)} ton CO₂e/tahun` 
+            : `${formatKg(result.total_kg)} kg CO2e`;
         summary.appendChild(total);
 
         const scopes = document.createElement('div');
         scopes.className = 'cami-result-scopes';
         [1, 2, 3].forEach((scope) => {
+            const scopeKg = Number(result[`scope${scope}_kg`] || 0);
+            const scopeTon = scopeKg / 1000;
             const item = document.createElement('span');
-            item.textContent = `Scope ${scope}: ${formatKg(result[`scope${scope}_kg`])} kg`;
+            item.textContent = `Scope ${scope}: ${scopeTon >= 1 ? scopeTon.toFixed(3) + ' ton' : formatKg(scopeKg) + ' kg'}`;
             scopes.appendChild(item);
         });
         summary.appendChild(scopes);
@@ -410,8 +416,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = message?.custom?.type === 'calculation_result'
             && Number.isFinite(message.custom.total_kg)
             ? message.custom : null;
+        
         const bubble = addMessage(
-            result ? 'Hasil emisi berhasil dihitung dan disimpan di akunmu.'
+            result 
+                ? (storageOwner === 'guest' 
+                    ? 'Hasil estimasi emisi sementara berhasil dihitung.' 
+                    : 'Hasil emisi berhasil dihitung dan disimpan di akunmu.')
                 : (text || 'Cami mengirimkan balasan tanpa teks.'),
             'bot',
             '',

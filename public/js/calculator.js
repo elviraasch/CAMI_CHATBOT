@@ -1,5 +1,3 @@
-
-
 'use strict';
 
 
@@ -7,91 +5,79 @@ const EF_DB = {
 
     // ── BAHAN BAKAR STASIONER & BERGERAK (kgCO₂e/Liter kecuali disebutkan) ──
     fuel: {
-        solar_cn53:   { ef: 2.626, unit: 'kgCO₂e/L',  ref: '' },
-        solar_cn51:   { ef: 2.650, unit: 'kgCO₂e/L',  ref: '' },
-        solar_cn48:   { ef: 2.673, unit: 'kgCO₂e/L',  ref: '' },
-        diesel:       { ef: 2.779, unit: 'kgCO₂e/L',  ref: '' },
-        ron98:        { ef: 2.310, unit: 'kgCO₂e/L',  ref: '' },
-        ron92:        { ef: 2.305, unit: 'kgCO₂e/L',  ref: '' },
-        ron90:        { ef: 2.309, unit: 'kgCO₂e/L',  ref: '' },
-        ron88:        { ef: 2.315, unit: 'kgCO₂e/L',  ref: '' },
-        lpg:          { ef: 3.150, unit: 'kgCO₂e/kg', ref: '' },
-        coal_bit:     { ef: 1.974, unit: 'kgCO₂e/kg', ref: '' },
-        coal_briket:  { ef: 2.018, unit: 'kgCO₂e/kg', ref: '' },
-        charcoal:     { ef: 3.304, unit: 'kgCO₂e/kg', ref: '' },
-        natgas:       { ef: 2.150, unit: 'kgCO₂e/m³', ref: '' },
-        lgv:          { ef: 3.004, unit: 'kgCO₂e/L',  ref: '' },
-        lng:          { ef: 2.699, unit: 'kgCO₂e/kg', ref: '' },
-        avtur:        { ef: 2.549, unit: 'kgCO₂e/L',  ref: '' },
-        kerosene:     { ef: 2.553, unit: 'kgCO₂e/L',  ref: '' },
-        // Household
-        cng:          { ef: 2.034, unit: 'kgCO₂e/m³', ref: '' },
-        wood:         { ef: 1.747, unit: 'kgCO₂e/kg', ref: '' },
+        solar_cn53:   { ef: 72.85, unit: 'Ton CO2/TJ',  ref: '' },
+        solar_cn51:   { ef: 72.93, unit: 'Ton CO2/TJ',  ref: '' },
+        solar_cn48:   { ef: 73.28, unit: 'Ton CO2/TJ',  ref: '' },
+        diesel:       { ef: 74.52, unit: 'Ton CO2/TJ',  ref: '' },
+        ron98:        { ef: 68.91, unit: 'Ton CO2/TJ',  ref: '' },
+        ron92:        { ef: 69.04, unit: 'Ton CO2/TJ',  ref: '' },
+        ron90:        { ef: 69.29 , unit: 'Ton CO2/TJ', ref: '' },
+        ron88:        { ef: 69.67, unit: 'Ton CO2/TJ',  ref: '' },
+        lpg:          { ef: 65.41, unit: 'kgCO₂e/kg', ref: '' },
+        cng:          { ef: 56.1,  unit: 'kgCO₂e/kg', ref: '' },
+        avtur:        { ef: 72.36, unit: 'Ton CO2/TJ',  ref: '' },
+        kerosene:     { ef: 72.43, unit: 'Ton CO2/TJ',  ref: '' },
+        coal:         { ef: 99.718, unit: 'kgCO₂e/GJ', ref: '' },
+        naturalgas:   { ef: 57.600, unit: 'kgCO₂e/GJ', ref: '' },
+        minyakbakar:   { ef: 77.90, unit: 'Ton CO2/TJ', ref: '' },
         // Distance-based (kgCO₂e/km) — IPCC 2006 Vol.2 T3.2.2
         car_petrol:   { ef: 0.210, unit: 'kgCO₂e/km', ref: '' },
         car_diesel:   { ef: 0.270, unit: 'kgCO₂e/km', ref: '' },
         motorcycle:   { ef: 0.113, unit: 'kgCO₂e/km', ref: '' },
-        listrik:      { ef: 0.000, unit: 'kgCO₂e/km', ref: '' },
     },
 
     // ── LISTRIK PLN (kgCO₂e/kWh) ─────────────────────────────────────────────
     // Sumber: MEMR Permen 10/2022 
     grid: {
-        jawa_bali:   { ef: 0.8099, display: '0,8099', unit: 'kgCO₂e/kWh', ref: 'Grid Jawa-Bali' },
-        sumatra:     { ef: 0.8790, display: '0,8790', unit: 'kgCO₂e/kWh', ref: 'Grid Sumatra' },
-        kalimantan:  { ef: 1.0460, display: '1,0460', unit: 'kgCO₂e/kWh', ref: 'Grid Kalimantan' },
-        sulawesi:    { ef: 0.8450, display: '0,8450', unit: 'kgCO₂e/kWh', ref: 'Grid Sulawesi' },
+        jawa_bali:   { ef: 0.80, display: '0,80', unit: 'kgCO₂e/kWh', ref: 'Grid Jawa-Bali' },
         // Household (per kWh)
-        household:   { ef: 0.8099, display: '0,8099', unit: 'kgCO₂e/kWh', ref: 'Grid Jawa-Bali' },
+        household:   { ef: 0.80, display: '0,80', unit: 'kgCO₂e/kWh', ref: 'Grid Jawa-Bali' },
     },
 
     // ── TRANSPORTASI PENUMPANG (kgCO₂e/pax·km) ───────────────────────────────
     transit: {
-        flight_dom:       { ef: 0.1330, unit: 'kgCO₂e/pax·km', ref: 'GHG Protocol Scope 3 Cat.6 · DEFRA 2023 · Domestik' },
-        flight_int_short: { ef: 0.1530, unit: 'kgCO₂e/pax·km', ref: 'GHG Protocol Scope 3 Cat.6 · DEFRA 2023 · Intl <3700km' },
-        flight_int_long:  { ef: 0.1950, unit: 'kgCO₂e/pax·km', ref: 'GHG Protocol Scope 3 Cat.6 · DEFRA 2023 · Intl >3700km' },
-        train:            { ef: 0.0370, unit: 'kgCO₂e/pax·km', ref: 'GHG Protocol Scope 3 Cat.6 · Buku II Vol I 2012' },
-        bus:              { ef: 0.0890, unit: 'kgCO₂e/pax·km', ref: 'Buku II Vol I KLHK 2012 · Bus/Angkot' },
+        flight_dom:       { ef: 0.1330, unit: 'kgCO₂e/pax·km', ref: 'Domestik' },
+        flight_int_short: { ef: 0.1530, unit: 'kgCO₂e/pax·km', ref: 'Intl <3700km' },
+        flight_int_long:  { ef: 0.1950, unit: 'kgCO₂e/pax·km', ref: 'Intl >3700km' },
+        train:            { ef: 0.0370, unit: 'kgCO₂e/pax·km', ref: '' },
+        bus:              { ef: 0.0890, unit: 'kgCO₂e/pax·km', ref: '' },
         // Flight class multipliers for company (base = economy pax·km)
-        economy:  { ef: 0.133, unit: 'kgCO₂e/pax·km', ref: 'DEFRA 2023 · Economy class' },
-        business: { ef: 0.266, unit: 'kgCO₂e/pax·km', ref: 'DEFRA 2023 · Business class (2× economy)' },
-        first:    { ef: 0.399, unit: 'kgCO₂e/pax·km', ref: 'DEFRA 2023 · First class (3× economy)' },
+        economy:  { ef: 1, unit: 'kgCO₂e/pax·km', ref: 'Economy class' },
+        business: { ef: 1.5, unit: 'kgCO₂e/pax·km', ref: ' Business class (2× economy)' },
+        first:    { ef: 2, unit: 'kgCO₂e/pax·km', ref: 'First class (3× economy)' },
     },
 
     // ── KERETA API (kgCO₂e/pax·km) ───────────────────────────────────────────
-    // Semua kelas kereta menggunakan EF kereta yang sama (infrastruktur sama)
-    // perbedaan hanya faktor kenyamanan, emisi per pax·km konsisten
     train: {
         ekonomi:     { ef: 0.01219, unit: 'kgCO₂e/pax·km', ref: 'KAI' },
         bisnis:      { ef: 0.01308, unit: 'kgCO₂e/pax·km', ref: 'KAI' },
-        eksekutif:   { ef: 0.01750, unit: 'kgCO₂e/pax·km', ref: 'KAI' },
-        panoramic:   { ef: 0.02469, unit: 'kgCO₂e/pax·km', ref: 'KAI' },
-        luxury:      { ef: 0.02804, unit: 'kgCO₂e/pax·km', ref: 'KAI' },
-        priority:    { ef: 0.03044, unit: 'kgCO₂e/pax·km', ref: 'KAI' },
-        compartment: { ef: 0.04390, unit: 'kgCO₂e/pax·km', ref: 'KAI' },
     },
 
     // ── HOTEL (kgCO₂e/kamar·malam) ───────────────────────────────────────────
-    hotel: { ef: 49.37, unit: 'Bank Indonesia (2026), DEFRA (2025)' },
+    hotel: { ef: 49.37, unit: '' },
 
     // ── PANGAN (kgCO₂e/kg) ───────────────────────────────────────────────────
-    // Sumber: IPCC 2006 Vol.4 AFOLU · FAO 2022 · GHG Protocol Scope 3
     food: {
-        beef:    { ef: 27.0, unit: 'kgCO₂e/kg', ref: 'IPCC 2006 Vol.4 · Enteric fermentation' },
-        poultry: { ef:  6.9, unit: 'kgCO₂e/kg', ref: 'IPCC 2006 Vol.4 AFOLU' },
-        fish:    { ef:  5.4, unit: 'kgCO₂e/kg', ref: 'FAO 2022 · GHG Protocol Scope 3' },
-        veg:     { ef:  0.4, unit: 'kgCO₂e/kg', ref: '' },
+        beef:    { ef: 209.9, unit: 'kgCO₂e/kg', ref: '' },
+        poultry: { ef:  20.1, unit: 'kgCO₂e/kg', ref: '' },
+        fish:    { ef:  26.5, unit: 'kgCO₂e/kg', ref: '' },
+        veg:     { ef:  1, unit: 'kgCO₂e/kg', ref: '' },
+        rice:    { ef:  8.8, unit: 'kgCO₂e/kg', ref: '' },
+        egg:     { ef:  8.4, unit: 'kgCO₂e/kg', ref: '' },
+        fruits:  { ef:  2.9, unit: 'kgCO₂e/kg', ref: '' },
+        milk:    { ef:  4.8, unit: 'kgCO₂e/kg', ref: '' },
     },
 
     // ── SAMPAH & AIR ──────────────────────────────────────────────────────────
-    waste: { ef: 0.52,  unit: 'kgCO₂e/kg', ref: 'IPCC 2006 Vol.5 · Buku II Vol I 2012 TPA' },
-    water: { ef: 0.344, unit: 'kgCO₂e/m³', ref: 'GHG Protocol Scope 3 Cat.1' },
+    waste: { ef: 0.4,  unit: 'kgCO₂e/kg', ref: '' },
+    water: { ef: 0.149, unit: 'kgCO₂e/m³', ref: '' },
+    limbah: { ef: 0.272, unit: 'kgCO₂e/m³', ref: '' },
 
     // ── KENDARAAN PRIBADI (distance-based, kgCO₂e/km) ────────────────────────
     vehicle: {
-        car_petrol: { ron98: 0.210, ron92: 0.212, ron90: 0.214, ron88: 0.216, listrik: 0 },
-        car_diesel: { ron98: 0.270, ron92: 0.270, ron90: 0.270, ron88: 0.270, listrik: 0, diesel: 0.270 },
-        motorcycle: { ron98: 0.108, ron92: 0.110, ron90: 0.112, ron88: 0.113, listrik: 0 },
+        car_petrol: { ron98: 68.91, ron92: 69.04, ron90: 69.29, ron88: 69.67},
+        car_diesel: { ron98: 68.91, ron92: 69.04, ron90: 69.29, ron88: 69.67, diesel: 74.52 },
+        motorcycle: { ron98: 68.91, ron92: 69.04, ron90: 69.29, ron88: 69.67,  },
     },
 };
 
@@ -322,12 +308,8 @@ function updateAllTransitModeFields() {
     document.querySelectorAll('[data-group="p_transit"]').forEach(updateTransitModeFields);
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// TAB NAVIGATION
-// ═══════════════════════════════════════════════════════════════════════════════
 
 function switchTab(prefix, step, total) {
-    // Hide all panes for this prefix
     for (let i = 1; i <= total; i++) {
         const pane = document.getElementById(`${prefix}-step-${i}`);
         if (pane) {
@@ -337,7 +319,6 @@ function switchTab(prefix, step, total) {
         }
     }
 
-    // Update tab buttons
     for (let i = 1; i <= total; i++) {
         const isTarget = i === step;
         document.querySelectorAll(`[data-step="${prefix}${i}"]`).forEach(b => {
@@ -351,13 +332,11 @@ function switchTab(prefix, step, total) {
 }
 
 function switchSubTab(group, key) {
-    // Hide all panes in group
     document.querySelectorAll(`.sub-tab-pane[id^="${group}-"]`).forEach(p => {
         const isTarget = p.id === `${group}-${key}`;
         p.classList.toggle('active', isTarget);
         p.hidden = !isTarget;
     });
-    // Activate
     const target = document.getElementById(`${group}-${key}`);
     if (target) {
         target.classList.add('active');
@@ -538,16 +517,12 @@ function enhanceCalculatorAccessibility() {
     });
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// DYNAMIC ROWS — ADD / REMOVE
-// ═══════════════════════════════════════════════════════════════════════════════
 
 const ROW_TEMPLATES = {};
 
 document.addEventListener('DOMContentLoaded', () => {
     organisePersonalCalculator();
 
-    // Cache first row of each group as template
     document.querySelectorAll('[data-group]').forEach(row => {
         const g = row.dataset.group;
         if (!ROW_TEMPLATES[g]) ROW_TEMPLATES[g] = row.outerHTML;
@@ -581,7 +556,6 @@ function addRow(group) {
     tmp.innerHTML = ROW_TEMPLATES[group];
     const newRow = tmp.firstElementChild;
 
-    // Reset values
     newRow.querySelectorAll('input').forEach(i => i.value = '');
     newRow.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
     newRow.querySelectorAll('.flight-distance-hint').forEach(h => h.textContent = 'Pilih asal dan tujuan bandara');
@@ -597,7 +571,6 @@ function removeRow(btn) {
     const container = row?.parentElement;
     if (!container) return;
     if (container.querySelectorAll('.entry-row').length <= 1) {
-        // Reset instead of remove
         row.querySelectorAll('input').forEach(i => i.value = '');
         row.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
         row.querySelectorAll('.flight-distance-hint').forEach(h => h.textContent = 'Pilih asal dan tujuan bandara');
@@ -622,7 +595,7 @@ function updateEfChip(selectEl, group) {
     let efData = null;
 
     if (['c_stat','c_mobile_fuel'].includes(group)) efData = getFuelEF(val);
-    else if (group === 'c_mobile_dist')              efData = getFuelEF(val);  // distance-based per-km keys overlap
+    else if (group === 'c_mobile_dist')              efData = getFuelEF(val);
     else if (group === 'c_elec')                     efData = getGridEF(val);
     else if (group === 'c_flight')                   efData = EF_DB.transit[val] || null;
     else if (group === 'c_train')                    efData = getTrainEF(val);
@@ -643,24 +616,17 @@ function updateEfChip(selectEl, group) {
 }
 
 function updateVehicleFuel(typeSelect) {
-    // Optionally lock fuel options based on vehicle type (UX nicety)
     const fuelSel = typeSelect.closest('.entry-fields')?.querySelector('[name="p_vehicle_fuel[]"]');
     if (!fuelSel) return;
     const t = typeSelect.value;
-    // For diesel cars, suggest diesel; for motorcycle, suggest RON
     if (t === 'car_diesel') {
         fuelSel.querySelector('option[value="ron98"]') && (fuelSel.value = 'ron88');
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// LIVE CALCULATION ENGINE
-// ═══════════════════════════════════════════════════════════════════════════════
-
 function calcLive() {
     updateAllFlightRoutes();
 
-    // Run full calc quietly and update previews
     const r = calcPersonalAll();
     setPreview('p_energy',      r.energy_rt);
     setPreview('p_vehicle',     r.vehicle);
@@ -697,7 +663,6 @@ function calcLive() {
 function setPreview(id, val) {
     const el = document.getElementById(`prev_${id}`);
     if (!el) return;
-    const unit = el.querySelector('span');
     const num  = val >= 1000
         ? (val / 1000).toFixed(2) + ' ton'
         : val.toFixed(1) + ' kg';
@@ -725,16 +690,13 @@ function rowTriples(nameA, nameB, nameC) {
     return a.map((el, i) => [el.value, parseFloat(b[i]?.value)||0, parseFloat(c[i]?.value)||0]);
 }
 
-// ── Personal totals ────────────────────────────────────────────────────────────
 function calcPersonalAll() {
-    // Energy RT (monthly × 12)
     let energy_rt = 0;
     rowPairs('p_energy_fuel','p_energy_qty').forEach(([fuel, qty]) => {
         const ef = getFuelEF(fuel);
         if (ef) energy_rt += qty * ef.ef;
     });
 
-    // Kendaraan (jarak monthly × 12)
     let vehicle = 0;
     rowTriples('p_vehicle_type','p_vehicle_fuel','p_vehicle_km').forEach(([type, fuel, km]) => {
         const vEF = EF_DB.vehicle[type];
@@ -744,10 +706,8 @@ function calcPersonalAll() {
         }
     });
 
-    // Listrik (monthly kWh × 12 × 0.8099)
     const electricity = v('p_elec_kwh') * EF_DB.grid.household.ef;
 
-    // Transportasi umum, ojol, dan pesawat
     let transit = 0;
     document.querySelectorAll('[data-group="p_transit"]').forEach((row) => {
         const mode = row.querySelector('[name="p_transit_mode[]"]')?.value;
@@ -764,71 +724,58 @@ function calcPersonalAll() {
 
     const flight = 0;
 
-    // Pangan (monthly × 12)
     let food = 0;
     rowPairs('p_food_type','p_food_kg').forEach(([type, kg]) => {
         const ef = getFoodEF(type);
         if (ef) food += kg * 12 * ef.ef;
     });
 
-    // Air (monthly × 12)
     const water = v('p_water_m3') * 12 * EF_DB.water.ef;
-
-    // Sampah (monthly × 12)
     const waste = v('p_waste_kg') * 12 * EF_DB.waste.ef;
 
     return { energy_rt, vehicle, electricity, transit, flight, food, water, waste };
 }
 
-// ── Company totals ─────────────────────────────────────────────────────────────
 function calcCompanyAll() {
-    // Stasioner (L or kg/year × EF)
     let stat = 0;
     rowPairs('c_stat_fuel','c_stat_qty').forEach(([fuel, qty]) => {
         const ef = getFuelEF(fuel);
         if (ef) stat += qty * ef.ef;
     });
 
-    // Mobile — BBM
     let mobileFuel = 0;
     rowPairs('c_mobile_fuel_type','c_mobile_fuel_qty').forEach(([fuel, qty]) => {
         const ef = getFuelEF(fuel);
         if (ef) mobileFuel += qty * ef.ef;
     });
 
-    // Mobile — Jarak (distance-based: km × kgCO₂e/km by fuel)
     let mobileDist = 0;
     rowPairs('c_mobile_dist_fuel','c_mobile_dist_km').forEach(([fuel, km]) => {
-        // Use vehicle EF proxy: diesel ≈ 0.27/km, petrol ≈ 0.21/km
         let ef_km = 0;
-        if (['solar_cn53','solar_cn51','solar_cn48','diesel'].includes(fuel)) ef_km = 0.270;
+        if (['solar_cn53','solar_cn51','solar_cn48','diesel'].includes(fuel)) ef_km = 74.52;
         else if (['ron98','ron92','ron90','ron88'].includes(fuel)) ef_km = 0.210;
         mobileDist += km * ef_km;
     });
 
     const mobile = mobileFuel + mobileDist;
 
-    // Scope 2 — Listrik (kWh × kgCO₂e/kWh)
     let elec = 0;
     rowPairs('c_elec_src','c_elec_kwh').forEach(([src, kwh]) => {
         const ef = getGridEF(src);
         if (ef) elec += kwh * ef.ef;
     });
 
-    // Scope 3 — Pesawat (pax × km × ef)
     let flight = 0;
     rowTriples('c_flight_class','c_flight_pax','c_flight_km').forEach(([cls, pax, km]) => {
         const ef = EF_DB.transit[cls];
         if (ef) flight += pax * km * ef.ef;
     });
 
-    // Scope 3 — Hotel (kamar × malam × ef)
     let hotel = 0;
     rowPairs('c_hotel_nights','c_hotel_rooms').forEach(([nights, rooms]) => {
         hotel += (parseFloat(nights)||0) * rooms * EF_DB.hotel.ef;
     });
 
-    // Scope 3 — Kereta (km × ef, 1 penumpang per baris)
     let train = 0;
     rowPairs('c_train_class','c_train_km').forEach(([cls, km]) => {
         const ef = getTrainEF(cls);
@@ -838,8 +785,6 @@ function calcCompanyAll() {
     return { stat, mobile, elec, flight, hotel, train };
 }
 
-// Simpan rincian aktivitas yang membentuk setiap subtotal agar hasil di database
-// bisa ditelusuri kembali sampai ke jenis sumber dan jumlah aktivitasnya.
 function buildScopeDetails(mode) {
     const scopes = { scope1: [], scope2: [], scope3: [] };
     const add = (scope, source, activity, quantity, unit, factor, emission, attributes = {}) => {
@@ -940,73 +885,72 @@ function buildScopeDetails(mode) {
     return scopes;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// MAIN CALCULATE BUTTONS
-// ═══════════════════════════════════════════════════════════════════════════════
-// Pastikan fungsi ini ada dan tidak terbungkus di dalam const atau let yang tertutup
-    async function calculateAll(mode) {
-        console.log("Tombol hitung ditekan, mode:", mode);
-        await normaliseAllAirportFields();
-        updateAllFlightRoutes();
-        
-        // 1. Ambil data kalkulasi
-        let totalKg = 0;
-        let details = {};
+async function calculateAll(mode) {
+    await normaliseAllAirportFields();
+    updateAllFlightRoutes();
+    
+    let totalKg = 0;
+    let details = {};
 
-        if (mode === 'personal') {
-            details = calcPersonalAll();
-            totalKg = Object.values(details).reduce((s, v) => s + v, 0);
-        } else {
-            const c = calcCompanyAll();
-            totalKg = c.stat + c.mobile + c.elec + c.flight + c.hotel + c.train;
-            details = c;
-        }
-
-        if (totalKg <= 0) {
-            alert('Silakan masukkan data konsumsi Anda terlebih dahulu sebelum menghitung!');
-            return;
-        }
-
-        if (mode === 'company') {
-            window.currentCalculationData = {
-                mode: mode,
-                total_kg: totalKg,
-                details: details,
-                scope_details: buildScopeDetails(mode)
-            };
-            renderCompanyResult(details, totalKg);
-            switchTab('c', 4, 4);
-            document.getElementById('result-box-company')?.scrollIntoView({ behavior: 'smooth' });
-            return;
-        }
-
-        window.currentCalculationData = {
-            mode: mode,
-            total_kg: totalKg,
-            details: details,
-            scope_details: buildScopeDetails(mode)
-        };
-
-        renderPersonalResult(details, totalKg);
-        switchTab('p', 4, 4);
-        document.getElementById('result-box')?.scrollIntoView({ behavior: 'smooth' });
+    if (mode === 'personal') {
+        details = calcPersonalAll();
+        totalKg = Object.values(details).reduce((s, v) => s + v, 0);
+    } else {
+        const c = calcCompanyAll();
+        totalKg = c.stat + c.mobile + c.elec + c.flight + c.hotel + c.train;
+        details = c;
     }
 
-    function showResults(data) {
-        const box = document.getElementById('result-box'); // Sesuai ID di blade
-        box.style.display = 'block';
-        
-        // Isi elemen HTML dengan data hasil
-        document.getElementById('total-emisi-display').textContent = data.total_kg + ' kg CO2';
-        document.getElementById('biaya-display').textContent = 'Rp ' + data.biaya.toLocaleString();
-        
-        // Tampilkan tombol "Lanjut ke Dashboard" agar user bisa pindah manual
-        document.getElementById('btn-to-dashboard').style.display = 'inline-block';
+    if (totalKg <= 0) {
+        alert('Silakan masukkan data konsumsi Anda terlebih dahulu sebelum menghitung!');
+        return;
     }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// RENDER RESULTS
-// ═══════════════════════════════════════════════════════════════════════════════
+    // ── HITUNG MASING-MASING SCOPE SECARA AKURAT ─────────────────
+    const scope1Kg = mode === 'personal' ? (details.energy_rt + details.vehicle) : (details.stat + details.mobile);
+    const scope2Kg = mode === 'personal' ? details.electricity : details.elec;
+    const scope3Kg = mode === 'personal' ? ((details.transit || 0) + (details.flight || 0) + details.food + details.water + details.waste) : (details.flight + details.hotel + details.train);
+
+    window.currentCalculationData = {
+        mode: mode,
+        total_kg: totalKg,
+        scope1_kg: scope1Kg,
+        scope2_kg: scope2Kg,
+        scope3_kg: scope3Kg,
+        details: details,
+        scope_details: buildScopeDetails(mode)
+    };
+
+    // ── KIRIM DATA INI OTOMATIS KE CHATBOT CAMI ──────────────────
+    if (window.CAMI_CHAT_ENDPOINT) {
+        fetch(window.CAMI_CHAT_ENDPOINT, {
+            method: 'POST', 
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': window.CAMI_CSRF_TOKEN,
+            },
+            body: JSON.stringify({
+                message: 'hitung emisi',
+                custom: {
+                    type: 'calculation_request',
+                    data: window.currentCalculationData
+                }
+            })
+        }).catch(() => {}); 
+    }
+
+    if (mode === 'company') {
+        renderCompanyResult(details, totalKg);
+        switchTab('c', 4, 4);
+        document.getElementById('result-box-company')?.scrollIntoView({ behavior: 'smooth' });
+        return;
+    }
+
+    renderPersonalResult(details, totalKg);
+    switchTab('p', 4, 4);
+    document.getElementById('result-box')?.scrollIntoView({ behavior: 'smooth' });
+}
 
 function renderPersonalResult(cats, totalKg) {
     const box = document.getElementById('result-box');
@@ -1052,7 +996,7 @@ function renderPersonalResult(cats, totalKg) {
                 <i class="fas fa-cloud-upload-alt"></i> Simpan Hasil ke Dashboard
            </button>`
         : `<a href="/register" class="btn-calculate result-register-link">
-                <i class="fas fa-user-plus"></i> Daftar Akun untuk Simpan Hasil
+                <i class="fas fa-user-plus"></i> Masuk untuk Simpan Hasil
            </a>`;
 
     box.innerHTML = `
@@ -1092,12 +1036,6 @@ function renderPersonalResult(cats, totalKg) {
             <button class="btn-reset" type="button" data-reset-calculator>
                 <i class="fas fa-redo"></i> Hitung Ulang
             </button>
-        </div>
-
-        <div class="result-disclaimer">
-            <i class="fas fa-info-circle"></i>
-            Kalkulasi menggunakan faktor emisi dari GHG Protocol, ISO 14064-1:2018, IPCC 2006 Guidelines,
-            MEMR Permen 10/2022, dan Pedoman Inventarisasi GRK Nasional Buku II Volume I KLHK 2012.
         </div>`;
 
     requestAnimationFrame(() => {
@@ -1192,15 +1130,8 @@ function renderCompanyResult(c, totalKg) {
             <button class="btn-reset" type="button" data-reset-calculator>
                 <i class="fas fa-redo"></i> Hitung Ulang
             </button>
-        </div>
-
-        <div class="result-disclaimer">
-            <i class="fas fa-info-circle"></i>
-            Kalkulasi menggunakan faktor emisi dari GHG Protocol, ISO 14064-1:2018, IPCC 2006 Guidelines (Vol.2,3,4,5),
-            MEMR Permen 10/2022, DEFRA 2023, dan Pedoman Inventarisasi GRK Nasional Buku II Volume I KLHK 2012.
         </div>`;
 
-    // Animate bars
     requestAnimationFrame(() => {
         setTimeout(() => {
             const bar = document.getElementById('cbar_s1');
@@ -1216,10 +1147,6 @@ function renderCompanyResult(c, totalKg) {
         }, 240);
     });
 }
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// RESET
-// ═══════════════════════════════════════════════════════════════════════════════
 
 function resetCalculator() {
     document.querySelectorAll('.input-field').forEach(el => {
@@ -1240,7 +1167,6 @@ function resetCalculator() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── INIT ───────────────────────────────────────────────────────────────────────
 function initAll() {
     enhanceCalculatorAccessibility();
 
@@ -1261,12 +1187,7 @@ function initAll() {
     updateAllTransitModeFields();
 }
 
-// ====================================
-// 6. AJAX STORAGE & MULTI-LOCALSTORAGE ENGINE (Anti-Replace)
-// ====================================
 window.saveCalculationToDatabase = function(e) {
-    
-    // PERBAIKAN 1: Ambil data dinamis dari DOM jika window.currentCalculationData belum di-set oleh fungsi hitung
     if (!window.currentCalculationData) {
         let rawEmisiText = document.getElementById('hasil-emisi')?.textContent?.trim() || '';
         
@@ -1275,7 +1196,6 @@ window.saveCalculationToDatabase = function(e) {
             return;
         }
 
-        // Konversi text "X.XX ton CO₂e" dari layar menjadi angka murni Kg untuk backend
         let cleanValue = rawEmisiText.replace(/ton\sCO₂e/gi, '').replace(/kg\sCO₂e/gi, '').trim();
         let totalTon = parseFloat(cleanValue);
         let totalKg = totalTon * 1000;
@@ -1291,7 +1211,6 @@ window.saveCalculationToDatabase = function(e) {
         };
     }
 
-    // PERBAIKAN 2: Menggunakan penanganan event target yang aman dan kompatibel di semua browser
     const currentEvent = e || window.event;
     const btn = currentEvent?.target
         ? (currentEvent.target.closest('[data-save-calculation]') || currentEvent.target)
@@ -1302,7 +1221,6 @@ window.saveCalculationToDatabase = function(e) {
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan ke Dashboard...';
     }
 
-    // 1. Kirim data ke database Laravel via AJAX POST
     fetch('/calculator/store', { 
         method: 'POST',
         headers: {
@@ -1333,7 +1251,6 @@ window.saveCalculationToDatabase = function(e) {
                 btn.style.borderColor = '#67C090';
             }
 
-            // 2. Ambil daftar histori lama, jika belum ada buat array kosong []
             const storageKey = window.CARBON_STORAGE_KEY || 'carbon_history_guest';
             let historyList = [];
             try {
@@ -1342,7 +1259,6 @@ window.saveCalculationToDatabase = function(e) {
                 historyList = [];
             }
 
-            // Susun data objek baru lengkap dengan waktu simpan (timestamp)
             const newHistoryItem = {
                 id: Date.now(),
                 date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit' }),
@@ -1351,17 +1267,14 @@ window.saveCalculationToDatabase = function(e) {
                 proyek: res.data ? res.data.proyek : '-'
             };
 
-            // Masukkan data baru ke dalam daftar teratas (unshift)
             historyList.unshift(newHistoryItem);
 
-            // Simpan kembali daftar array utuh ke localStorage browser
             try {
                 localStorage.setItem(storageKey, JSON.stringify(historyList));
             } catch (storageErr) {
                 console.warn('LocalStorage error:', storageErr);
             }
             
-            // Muat ulang daftar tampilan riwayat di bawah secara realtime
             if (typeof renderHistoryContainer === 'function') {
                 renderHistoryContainer();
             }
@@ -1379,7 +1292,6 @@ window.saveCalculationToDatabase = function(e) {
     });
 };
 
-// Fungsi pembantu untuk mengembalikan state tombol jika gagal
 function resetButton(btn) {
     if (btn && btn.style) {
         btn.disabled = false;
@@ -1387,9 +1299,6 @@ function resetButton(btn) {
     }
 }
 
-// ====================================
-// 7. RENDER DAFTAR SEJARAH RIWAYAT PERHITUNGAN (Multi-List)
-// ====================================
 function renderHistoryContainer() {
     let historyWrapper = document.getElementById('history-log-wrapper');
     const resultBox = document.getElementById('result-box');
@@ -1454,7 +1363,6 @@ function renderHistoryContainer() {
     historyWrapper.innerHTML = htmlContent;
 }
 
-// Fungsi pembantu untuk clear data list jika user mau membersihkan browsernya
 window.clearCarbonHistory = function() {
     if (confirm('Apakah Anda yakin ingin menghapus seluruh daftar riwayat kalkulasi, baik di browser ini maupun di database dashboard?')) {
         
@@ -1489,11 +1397,8 @@ window.clearCarbonHistory = function() {
     }
 };
 
-// Pastikan saat halaman dimuat ulang pertama kali, seluruh daftar list langsung digambar otomatis
 document.addEventListener('DOMContentLoaded', function() {
     if (!window.CARBON_STORAGE_KEY) {
-        console.log("Status: Guest. Mengosongkan riwayat kalkulator.");
-        
         const historyContainer = document.getElementById('history-container');
         if (historyContainer) historyContainer.innerHTML = '';
         
@@ -1551,7 +1456,6 @@ document.addEventListener('click', function(event) {
     }
 });
 
-// Expose globals
 window.switchTab      = switchTab;
 window.switchSubTab   = switchSubTab;
 window.switchMethod   = switchMethod;

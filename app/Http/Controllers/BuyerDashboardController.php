@@ -78,7 +78,7 @@ class BuyerDashboardController extends Controller
             'treeEquivalent',
             'totalTransactions',
             'totalSpent',
-            'transactions', // Tetap dilempar sebagai $transactions untuk keamanan view blade
+            'transactions', 
             'certificateOrders',
             'recommendedProjects',
         ));

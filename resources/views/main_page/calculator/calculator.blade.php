@@ -24,9 +24,7 @@
         <div class="calculator-hero-content">
             <span class="hero-chip"><i class="fas fa-leaf"></i> Carbon Footprint Calculator</span>
             <h1 class="calculator-hero-title">Kalkulator Emisi Karbon</h1>
-            <p class="calculator-hero-description">
-                Estimasi jejak karbon berdasarkan <strong>GHG Protocol · ISO 14064-1:2018 · IPCC 2006 · Buku II Vol I KLHK 2012</strong>
-            </p>
+            
         </div>
     </div>
 </section>
@@ -75,8 +73,8 @@
             <div class="calculator-profile-icon"><i class="fas fa-user"></i></div>
             <div>
                 <span class="calculator-profile-kicker">Kalkulator Buyer Individu</span>
-                <h2>Hitung emisi berdasarkan GHG Protocol</h2>
-                <p>Isi aktivitas pada setiap scope, lalu tinjau hasil dan simpan kalkulasi ke dashboard buyer.</p>
+                <h2>Hitung emisi Jejak Karbon</h2>
+                <p>Isi aktivitas pada setiap scope, lalu tinjau hasil dan simpan kalkulasi ke dashboard.</p>
             </div>
             <span class="calculator-profile-status"><i class="fas fa-shield-alt"></i> Data tersimpan aman</span>
         </div>
@@ -129,7 +127,7 @@
 
                     <div class="ref-info-bar">
                         <i class="fas fa-info-circle"></i>
-                        <span>Faktor emisi: IPCC 2006 Vol.2 T2.2 · Buku II Vol I KLHK 2012 · GWP IPCC AR6</span>
+                        <span>Faktor emisi</span>
                     </div>
 
                     <div id="rows_p_energy">
@@ -140,8 +138,7 @@
                                     <select class="input-field select-field" name="p_energy_fuel[]" onchange="calcLive()">
                                         <option value="">-- Pilih Bahan Bakar --</option>
                                         <option value="lpg">LPG (Gas Tabung)</option>
-                                        <option value="cng">Gas Alam / CNG (Gas Pipa)</option>
-                                        <option value="wood">Kayu Bakar / Biomassa</option>
+                                         <option value="cng">CNG (Gas Alam)</option>
                                     </select>
                                 </div>
                                 <div class="input-group">
@@ -188,7 +185,7 @@
 
                     <div class="ref-info-bar">
                         <i class="fas fa-info-circle"></i>
-                        <span>Faktor emisi: IPCC 2006 Vol.2 T3.2.2 · Buku II Vol I KLHK 2012 · berbasis jarak tempuh</span>
+                        <span>Faktor emisi berbasis jarak tempuh</span>
                     </div>
 
                     <div id="rows_p_vehicle">
@@ -198,8 +195,7 @@
                                     <label class="input-label">Jenis Kendaraan</label>
                                     <select class="input-field select-field" name="p_vehicle_type[]" onchange="updateVehicleFuel(this); calcLive()">
                                         <option value="">-- Pilih Kendaraan --</option>
-                                        <option value="car_petrol">Mobil Pribadi (Bensin)</option>
-                                        <option value="car_diesel">Mobil Pribadi (Diesel)</option>
+                                        <option value="car_petrol">Mobil Pribadi</option>
                                         <option value="motorcycle">Sepeda Motor</option>
                                     </select>
                                 </div>
@@ -211,7 +207,6 @@
                                         <option value="ron92">Bensin RON92</option>
                                         <option value="ron90">Bensin RON90</option>
                                         <option value="ron88">Bensin RON88</option>
-                                        <option value="listrik">Listrik</option>
                                     </select>
                                 </div>
                                 <div class="input-group">
@@ -258,7 +253,7 @@
 
                     <div class="ref-info-bar">
                         <i class="fas fa-info-circle"></i>
-                        <span>Faktor emisi: MEMR Permen 10/2022 · Buku II Vol I KLHK 2012 · GHG Protocol Scope 2</span>
+                        <span>Faktor emisi Scope 2</span>
                     </div>
 
                     <div class="input-row-grid">
@@ -272,7 +267,7 @@
                         </div>
                         <div class="input-group ef-display-group">
                             <label class="input-label">Faktor Emisi</label>
-                            <div class="ef-chip">0,8099 kgCO₂e/kWh<br><small>Grid Jawa-Bali · MEMR 2022</small></div>
+                            <div class="ef-chip">0,80 kgCO₂e/kWh<br><small>Grid Jawa-Bali</small></div>
                         </div>
                     </div>
 
@@ -319,7 +314,7 @@
 
                     <div class="ref-info-bar">
                         <i class="fas fa-info-circle"></i>
-                        <span>Faktor emisi: GHG Protocol Scope 3 · Buku II Vol I KLHK 2012 · berbasis penumpang-km</span>
+                        <span>Faktor emisi berbasis penumpang-km</span>
                     </div>
 
                     <div id="rows_p_transit">
@@ -329,8 +324,7 @@
                                     <label class="input-label">Moda Transportasi</label>
                                     <select class="input-field select-field" name="p_transit_mode[]" onchange="updateTransitModeFields(this); updateEfChip(this,'p_transit'); calcLive()">
                                         <option value="">-- Pilih Moda --</option>
-                                        <option value="bus">Bus / Angkot / Ojol</option>
-                                        <option value="train">Kereta / KRL / MRT</option>
+                                        <option value="train">Kereta</option>
                                         <option value="plane">Pesawat</option>
                                     </select>
                                 </div>
@@ -398,7 +392,7 @@
 
                     <div class="ref-info-bar">
                         <i class="fas fa-info-circle"></i>
-                        <span>Faktor emisi: GHG Protocol Scope 3 Cat.6 · DEFRA 2023 · Buku II Vol I KLHK 2012</span>
+                        <span>Faktor emisi</span>
                     </div>
 
                     <div id="rows_p_flight">
@@ -491,7 +485,7 @@
 
                     <div class="ref-info-bar">
                         <i class="fas fa-info-circle"></i>
-                        <span>Faktor emisi: IPCC 2006 Vol.4 AFOLU · FAO 2022 · GHG Protocol Scope 3</span>
+                        <span>Faktor emisi Scope 3</span>
                     </div>
 
                     <div id="rows_p_food">
@@ -504,7 +498,10 @@
                                         <option value="beef">Daging Sapi / Kambing</option>
                                         <option value="poultry">Daging Ayam / Unggas</option>
                                         <option value="fish">Ikan / Seafood</option>
-                                        <option value="veg">Sayuran & Buah-buahan (Nabati)</option>
+                                        <option value="veg">Sayuran </option>
+                                        <option value="egg">Telur</option>
+                                        <option value="fruits">Buah-buahan</option>
+                                        <option value="dairy">Susu & Produk Susu</option>
                                     </select>
                                 </div>
                                 <div class="input-group">
@@ -550,7 +547,7 @@
                 <div class="module-content" id="p_water-content">
                     <div class="ref-info-bar">
                         <i class="fas fa-info-circle"></i>
-                        <span>Faktor emisi: GHG Protocol Scope 3 Cat.1 · 0,344 kgCO₂e/m³</span>
+                        <span>Faktor emisi</span>
                     </div>
                     <div class="input-row-grid">
                         <div class="input-group">
@@ -562,7 +559,7 @@
                         </div>
                         <div class="input-group ef-display-group">
                             <label class="input-label">Faktor Emisi</label>
-                            <div class="ef-chip">0,344 kgCO₂e/m³<br><small>GHG Protocol Scope 3 Cat.1</small></div>
+                            <div class="ef-chip" data-ef-group="p_water">—</div>
                         </div>
                     </div>
                     <div class="scope-preview">
@@ -588,7 +585,7 @@
                 <div class="module-content" id="p_waste-content">
                     <div class="ref-info-bar">
                         <i class="fas fa-info-circle"></i>
-                        <span>Faktor emisi: IPCC 2006 Vol.5 · Buku II Vol I KLHK 2012 · metode IPCC Default · 0,52 kgCO₂e/kg</span>
+                        <span>Faktor emisi</span>
                     </div>
                     <div class="input-row-grid">
                         <div class="input-group">
@@ -600,7 +597,7 @@
                         </div>
                         <div class="input-group ef-display-group">
                             <label class="input-label">Faktor Emisi</label>
-                            <div class="ef-chip">0,52 kgCO₂e/kg<br><small>IPCC 2006 Vol.5 · Buku II Vol I</small></div>
+                            <div class="ef-chip" data-ef-group="p_waste">—</div>
                         </div>
                     </div>
                     <div class="scope-preview">
@@ -666,7 +663,6 @@
             <div class="scope-label-banner scope1-banner">
                 <i class="fas fa-fire"></i>
                 Scope 1 — Emisi Langsung
-                <span>GHG Protocol Scope 1 · ISO 14064-1:2018 Kl.6.3 · IPCC 2006 Vol.2</span>
             </div>
 
             {{-- Scope 1 – Sub Step Tab --}}
@@ -696,7 +692,7 @@
 
                         <div class="ref-info-bar">
                             <i class="fas fa-info-circle"></i>
-                            <span>IPCC 2006 Vol.2 T2.2 · Buku II Vol I KLHK 2012 · GHG Protocol Scope 1</span>
+                            <span>Faktor Emisi Pembakaran Stasioner</span>
                         </div>
 
                         <div id="rows_c_stat">
@@ -715,12 +711,8 @@
                                             <option value="ron90">Bensin RON90</option>
                                             <option value="ron88">Bensin RON88</option>
                                             <option value="lpg">LPG (Liquid Petroleum Gas)</option>
-                                            <option value="coal_bit">Batubara (Bituminous Coal)</option>
-                                            <option value="coal_briket">Briket Batubara</option>
-                                            <option value="charcoal">Arang</option>
+                                            <option value="coal_bit">Batubara (Coal)</option>
                                             <option value="natgas">Gas Alam</option>
-                                            <option value="lgv">LGV</option>
-                                            <option value="lng">LNG</option>
                                             <option value="avtur">Avtur</option>
                                             <option value="kerosene">Minyak Tanah</option>
                                         </select>
@@ -771,7 +763,7 @@
 
                         <div class="ref-info-bar">
                             <i class="fas fa-info-circle"></i>
-                            <span>IPCC 2006 Vol.2 T3.2.2 · Buku II Vol I KLHK 2012 · GHG Protocol Scope 1</span>
+                            <span>Faktor Emisi Pembakaran Bergerak</span>
                         </div>
 
                         {{-- Sub-sub toggle: pemakaian BBM vs jarak --}}
@@ -886,7 +878,6 @@
             <div class="scope-label-banner scope2-banner">
                 <i class="fas fa-bolt"></i>
                 Scope 2 — Emisi Tidak Langsung Energi
-                <span>GHG Protocol Scope 2 · MEMR Permen 10/2022 · Buku II Vol I KLHK 2012</span>
             </div>
 
             <div class="calc-module">
@@ -904,22 +895,12 @@
 
                     <div class="ref-info-bar">
                         <i class="fas fa-info-circle"></i>
-                        <span>MEMR Permen 10/2022 · Buku II Vol I KLHK 2012 · GHG Protocol Scope 2 location-based</span>
+                        <span>Faktor Emisi Listrik PLN Grid Jawa-Bali</span>
                     </div>
 
                     <div id="rows_c_elec">
                         <div class="entry-row" data-group="c_elec">
                             <div class="entry-fields">
-                                <div class="input-group">
-                                    <label class="input-label">Sumber Listrik</label>
-                                    <select class="input-field select-field" name="c_elec_src[]" onchange="updateEfChip(this,'c_elec'); calcLive()">
-                                        <option value="">-- Pilih Grid PLN --</option>
-                                        <option value="jawa_bali">Listrik PLN (Jawa-Bali)</option>
-                                        <option value="sumatra">Listrik PLN (Sumatra)</option>
-                                        <option value="kalimantan">Listrik PLN (Kalimantan)</option>
-                                        <option value="sulawesi">Listrik PLN (Sulawesi)</option>
-                                    </select>
-                                </div>
                                 <div class="input-group">
                                     <label class="input-label">Jumlah Pemakaian</label>
                                     <div class="input-with-unit">
@@ -964,7 +945,7 @@
             <div class="scope-label-banner scope3-banner">
                 <i class="fas fa-globe"></i>
                 Scope 3 — Emisi Nilai Rantai
-                <span>GHG Protocol Corporate Value Chain Standard (2011) · DEFRA 2023</span>
+                <span></span>
             </div>
 
             {{-- Scope 3 Sub-Step Tabs --}}
@@ -996,7 +977,7 @@
                     <div class="module-content" id="c_flight-content">
                         <div class="ref-info-bar">
                             <i class="fas fa-info-circle"></i>
-                            <span>GHG Protocol Scope 3 Cat.6 · DEFRA 2023 · kgCO₂e per penumpang·km</span>
+                            <span>Faktor Emisi Penerbangan</span>
                         </div>
                         <div id="rows_c_flight">
                             <div class="entry-row" data-group="c_flight">
@@ -1129,11 +1110,6 @@
                                             <option value="">-- Pilih Kelas --</option>
                                             <option value="ekonomi">Ekonomi</option>
                                             <option value="bisnis">Bisnis</option>
-                                            <option value="eksekutif">Eksekutif</option>
-                                            <option value="panoramic">Panoramic</option>
-                                            <option value="luxury">Luxury</option>
-                                            <option value="priority">Priority</option>
-                                            <option value="compartment">Compartment</option>
                                         </select>
                                     </div>
                                     <div class="input-group">
@@ -1280,56 +1256,6 @@
         </div>
         </div>
         @endif
-
-        {{-- ── REFERENSI FAKTOR EMISI ──────────────────────────────────── --}}
-        <div class="factors-reference">
-            <h3><i class="fas fa-book-open"></i> Referensi Faktor Emisi</h3>
-            <div class="factors-grid">
-                <div class="factor-item">
-                    <h4><i class="fas fa-gas-pump"></i> Bahan Bakar Cair</h4>
-                    <ul>
-                        <li>Solar CN53/51/48: <strong>2,63–2,68</strong> kgCO₂e/L</li>
-                        <li>Bensin RON98: <strong>2,19</strong> kgCO₂e/L</li>
-                        <li>Bensin RON92/90/88: <strong>2,20–2,24</strong> kgCO₂e/L</li>
-                        <li>Avtur: <strong>2,55</strong> kgCO₂e/L</li>
-                        <li>Minyak Tanah: <strong>2,54</strong> kgCO₂e/L</li>
-                    </ul>
-                    <p class="factor-ref">IPCC 2006 Vol.2 T2.2 · Buku II Vol I 2012</p>
-                </div>
-                <div class="factor-item">
-                    <h4><i class="fas fa-fire"></i> Gas & Padat</h4>
-                    <ul>
-                        <li>LPG: <strong>2,983</strong> kgCO₂e/kg</li>
-                        <li>Gas Alam: <strong>2,150</strong> kgCO₂e/m³</li>
-                        <li>LNG: <strong>2,75</strong> kgCO₂e/kg</li>
-                        <li>Batubara Bituminous: <strong>2,393</strong> kgCO₂e/kg</li>
-                        <li>Kayu Bakar: <strong>1,747</strong> kgCO₂e/kg</li>
-                    </ul>
-                    <p class="factor-ref">IPCC 2006 Vol.2 T2.2 · GWP IPCC AR6</p>
-                </div>
-                <div class="factor-item">
-                    <h4><i class="fas fa-bolt"></i> Listrik PLN</h4>
-                    <ul>
-                        <li>Jawa-Bali: <strong>0,8099</strong> kgCO₂e/kWh</li>
-                        <li>Sumatra: <strong>0,8790</strong> kgCO₂e/kWh</li>
-                        <li>Kalimantan: <strong>1,0460</strong> kgCO₂e/kWh</li>
-                        <li>Sulawesi: <strong>0,8450</strong> kgCO₂e/kWh</li>
-                    </ul>
-                    <p class="factor-ref">MEMR Permen 10/2022 · Buku II Vol I 2012</p>
-                </div>
-                <div class="factor-item">
-                    <h4><i class="fas fa-plane"></i> Transportasi</h4>
-                    <ul>
-                        <li>Pesawat Ekonomi: <strong>0,133</strong> kgCO₂e/pax·km</li>
-                        <li>Pesawat Bisnis: <strong>0,266</strong> kgCO₂e/pax·km</li>
-                        <li>Pesawat First: <strong>0,399</strong> kgCO₂e/pax·km</li>
-                        <li>Kereta: <strong>0,037</strong> kgCO₂e/pax·km</li>
-                        <li>Hotel: <strong>49,37</strong> kgCO₂e/kamar·malam</li>
-                    </ul>
-                    <p class="factor-ref">DEFRA 2023 · GHG Protocol Scope 3 Cat.6</p>
-                </div>
-            </div>
-        </div>
 
     </div>
 </main>

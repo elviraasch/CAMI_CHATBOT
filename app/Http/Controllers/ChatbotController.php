@@ -31,9 +31,12 @@ class ChatbotController extends Controller
         ]);
 
         $userMessage = trim($validated['message']);
-        $user = auth('sanctum')->user() ?? $request->user();
+        
+        // Mendukung Auth standar Laravel session maupun Sanctum dengan aman
+        $user = auth()->user() ?? auth('sanctum')->user() ?? $request->user();
 
         try {
+            // Query terkait proyek dapat diakses oleh guest maupun user login[cite: 26]
             $projectAnswer = $this->projectQueryService->answer($userMessage, $user);
             if ($projectAnswer !== null) {
                 return response()->json([
@@ -80,6 +83,7 @@ class ChatbotController extends Controller
                 'reply' => $rec['text'] ?? '',
                 'data' => [$rec],
             ]);
+            Log::info('Data Rekomendasi Guest:', ['count' => $projects->count(), 'data' => $recommendations]);
         }
 
         $conversationId = $validated['conversation_id'] ?? $validated['session_id'] ?? null;
@@ -87,6 +91,7 @@ class ChatbotController extends Controller
         if (! empty($conversationId)) {
             $senderId .= '_'.$conversationId;
         }
+
         try {
             $response = Http::acceptJson()
                 ->asJson()
@@ -122,28 +127,14 @@ class ChatbotController extends Controller
             ], 500);
 
         } catch (ConnectionException $exception) {
-            $previous = $exception->getPrevious();
-
-            $context = $previous instanceof \GuzzleHttp\Exception\ConnectException
-                ? $previous->getHandlerContext()
-                : [];
-
-            $isTimeout = (int) ($context['errno'] ?? 0) === 28
-                || str_contains($exception->getMessage(), 'cURL error 28');
-
             Log::warning('Permintaan ke Rasa gagal.', [
-                'failure_type' => $isTimeout ? 'timeout' : 'connection_failed',
-                'endpoint' => config('services.rasa.webhook_url'),
-                'curl_errno' => $context['errno'] ?? null,
                 'error' => $exception->getMessage(),
             ]);
 
             return response()->json([
                 'status' => 'error',
-                'message' => $isTimeout
-                    ? 'Respons chatbot terlalu lama. Silakan coba lagi sebentar.'
-                    : 'Chatbot belum dapat dihubungi. Silakan coba lagi sebentar.',
-            ], $isTimeout ? 504 : 503);
+                'message' => 'Chatbot belum dapat dihubungi. Silakan coba lagi sebentar.',
+            ], 503);
         }
     }
 
@@ -171,6 +162,9 @@ class ChatbotController extends Controller
                     'project_information_request',
                     'project_verification_request',
                     'recommendation_explanation_request',
+                    'project_comparison_request',
+                    'purchase_disclosure_request',
+                    'personal_action_plan_request',
                 ];
                 if (is_array($custom) && in_array($custom['type'] ?? null, $informationTypes, true)) {
                     return $this->completeInformationRequest(
@@ -185,26 +179,30 @@ class ChatbotController extends Controller
                     return $message;
                 }
 
-                if (! $user || ! is_array($custom['data'] ?? null)) {
-                    $message['text'] = 'Sesi akun tidak ditemukan. Silakan masuk kembali.';
-                    $message['custom'] = ['type' => 'calculation_error'];
-
-                    return $message;
-                }
-
-                $declaredType = $custom['account_type'] ?? null;
-                $dataType = $this->activityAccountType($custom['data']);
-                if (
-                    ($declaredType ?? $dataType) !== $user->account_category
-                    || ($dataType !== null && $dataType !== $user->account_category)
-                ) {
-                    $message['text'] = 'Tipe akun berubah saat pengisian. Silakan mulai perhitungan kembali.';
+                if (! is_array($custom['data'] ?? null)) {
+                    $message['text'] = 'Data perhitungan tidak valid.';
                     $message['custom'] = ['type' => 'calculation_error'];
 
                     return $message;
                 }
 
                 try {
+                    if (! $user) {
+                        $tempResult = $this->calculateTemporaryEmission($custom['data']);
+                        session(['guest_emission_result' => $tempResult]);
+                        
+                        $message['text'] = "Hasil estimasi emisi sementara (Sesi Tamu):\n"
+                            .'Total: '.$this->formatNumber($tempResult['total_kg']).' kg CO2e '
+                            .'('.$this->formatNumber($tempResult['total_ton'], 6)." ton).\n"
+                            .'Masuk (login) ke akun CAMAR untuk menyimpan hasil ini secara permanen ke database.';
+                        $message['custom'] = array_merge(
+                            ['type' => 'calculation_result'],
+                            $tempResult
+                        );
+                        return $message;
+                    }
+
+                    // Jika sudah login, simpan ke database seperti biasa
                     $result = $this->resultService->process($user, $custom['data']);
                     $message['text'] = $this->resultText($result);
                     $message['custom'] = array_merge(
@@ -224,34 +222,139 @@ class ChatbotController extends Controller
             })->values()->all();
     }
 
-    private function completeRecommendation(array $message, ?User $user): array
+    private function calculateTemporaryEmission(array $data): array
     {
-        if (! $user || ! $user->isBuyer()) {
-            $message['text'] = 'Masuk sebagai buyer terlebih dahulu untuk melihat rekomendasi proyekmu.';
-            $message['custom'] = ['type' => 'project_recommendation_error'];
+        $mode = $data['mode'] ?? 'personal';
 
+        if (isset($data['total_kg']) && is_numeric($data['total_kg'])) {
+            $totalKg = (float) $data['total_kg'];
+            return [
+                'calculation_id' => 'guest_session',
+                'mode' => $mode,
+                'scope1_kg' => (float) ($data['scope1_kg'] ?? 0),
+                'scope2_kg' => (float) ($data['scope2_kg'] ?? 0),
+                'scope3_kg' => (float) ($data['scope3_kg'] ?? 0),
+                'total_kg' => $totalKg,
+                'total_ton' => round($totalKg / 1000, 3),
+                'estimated_cost' => round(($totalKg / 1000) * 150000),
+                'recommendations' => [],
+            ];
+        }
+
+        $guestUser = new User(['role' => 'buyer', 'account_category' => $mode]);
+        try {
+            $calculationService = new \App\Services\CarbonCalculationService();
+            $result = $calculationService->calculate($guestUser, $data);
+            $totalKg = $result['total_kg'];
+
+            return [
+                'calculation_id' => 'guest_session',
+                'mode' => $result['mode'],
+                'scope1_kg' => $result['scope1_kg'],
+                'scope2_kg' => $result['scope2_kg'],
+                'scope3_kg' => $result['scope3_kg'],
+                'total_kg' => $totalKg,
+                'total_ton' => round($totalKg / 1000, 3),
+                'estimated_cost' => round(($totalKg / 1000) * 150000),
+                'recommendations' => [],
+            ];
+        } catch (\Throwable $e) {
+            return [
+                'calculation_id' => 'guest_session',
+                'mode' => $mode,
+                'scope1_kg' => 0,
+                'scope2_kg' => 0,
+                'scope3_kg' => 0,
+                'total_kg' => 0,
+                'total_ton' => 0,
+                'estimated_cost' => 0,
+                'recommendations' => [],
+            ];
+        }
+    }
+
+   private function completeRecommendation(array $message, ?User $user): array
+    {
+       if ($user && $user->isBuyer()) {
+            try {
+                $result = $this->resultService->recommendExisting($user);
+                $text = ($result['source'] ?? '') === 'latest_emission'
+                    ? 'Berdasarkan hasil emisi terakhirmu sebesar '
+                        .$this->formatNumber($result['total_kg'] ?? 0).' kg CO2e/tahun, berikut proyek yang sesuai:'
+                    : 'Kamu belum memiliki hasil emisi tersimpan. Berikut pilihan proyek awal yang tersedia.';
+
+                $message['text'] = $text;
+                $message['custom'] = array_merge(['type' => 'project_recommendation_result'], $result);
+                return $message;
+            } catch (Throwable $exception) {
+                report($exception);
+            }
+        }
+
+        $guestEmission = session('guest_emission_result');
+        if ($guestEmission && isset($guestEmission['total_kg'])) {
+            $totalKg = $guestEmission['total_kg'];
+            $requiredTon = ceil($totalKg / 1000);
+
+            $projects = \App\Models\Project::query()->approved()->where('stock_available', '>', 0)->limit(3)->get();
+            
+            $recommendations = $projects->map(function ($p) use ($requiredTon) {
+                $pricePerTon = (float) $p->price_per_ton;
+                return [
+                    'id' => $p->id,
+                    'name' => $p->name,
+                    'company_name' => $p->company_name,
+                    'category' => $p->category,
+                    'location' => $p->location,
+                    'price_per_ton' => $pricePerTon,
+                    'stock_available' => (int) $p->stock_available,
+                    'required_ton' => $requiredTon,
+                    'total_offset_cost' => $requiredTon * $pricePerTon,
+                    'score' => 85.0, 
+                    'reasons' => ['Kecocokan berdasarkan estimasi emisi sementara sesi tamu Anda.'],
+                    'url' => route('projects.show', $p->id),
+                ];
+            })->all();
+
+            $message['text'] = 'Berdasarkan hasil estimasi emisi sementara (' . $this->formatNumber($totalKg) . ' kg CO2e) pada sesi ini, berikut adalah rekomendasi proyek yang sesuai:';
+            
+            // PERBAIKAN: Sesuaikan struktur agar 'recommendations' terbaca oleh chatbot.js
+            $message['custom'] = [
+                'type' => 'project_recommendation_result',
+                'source' => 'guest_calculation',
+                'total_kg' => $totalKg,
+                'recommendations' => $recommendations,
+            ];
             return $message;
         }
 
-        try {
-            $result = $this->resultService->recommendExisting($user);
-            $text = $result['source'] === 'latest_emission'
-                ? 'Berdasarkan hasil emisi terakhirmu sebesar '
-                    .$this->formatNumber($result['total_kg']).' kg CO2e/tahun, berikut proyek yang sesuai:'
-                : 'Kamu belum memiliki hasil emisi tersimpan. Berikut pilihan proyek awal yang tersedia. Hitung emisi untuk rekomendasi yang lebih sesuai.';
+        // Jika guest dan BELUM PERNAH menghitung emisi sama sekali, tampilkan katalog umum
+        $projects = \App\Models\Project::query()->approved()->where('stock_available', '>', 0)->limit(3)->get();
+        
+        Log::info('Debug Proyek Guest:', [
+                'total_project_found' => $projects->count(),
+                'projects' => $projects->toArray()
+            ]);
+            
+        $recommendations = $projects->map(fn($p) => [
+            'id' => $p->id,
+            'name' => $p->name,
+            'company_name' => $p->company_name,
+            'category' => $p->category,
+            'location' => $p->location,
+            'price_per_ton' => (float) $p->price_per_ton,
+            'stock_available' => (int) $p->stock_available,
+            'url' => route('projects.show', $p->id),
+        ])->all();
 
-            if (empty($result['recommendations'])) {
-                $text .= "\nBelum ada proyek offset yang disetujui CAMAR dengan stok tersedia saat ini.";
-            }
-
-            $message['text'] = $text;
-            $message['custom'] = array_merge(['type' => 'project_recommendation_result'], $result);
-        } catch (Throwable $exception) {
-            report($exception);
-            $message['text'] = 'Rekomendasi proyek belum dapat ditampilkan. Silakan coba kembali.';
-            $message['custom'] = ['type' => 'project_recommendation_error'];
-        }
-
+        $message['text'] = 'Berikut adalah beberapa pilihan proyek awal CAMAR yang tersedia untuk dieksplorasi. Silakan hitung emisi terlebih dahulu atau masuk sebagai buyer untuk rekomendasi personal.';
+        
+        $message['custom'] = [
+            'type' => 'project_recommendation_result',
+            'source' => 'guest_catalog',
+            'recommendations' => $recommendations,
+        ];
+        
         return $message;
     }
 
@@ -262,6 +365,84 @@ class ChatbotController extends Controller
         string $userMessage
     ): array {
         try {
+            if (! $user && in_array($custom['type'] ?? '', ['carbon_balance_request', 'emission_explanation_request', 'personal_action_plan_request'], true)) {
+                $guestEmission = session('guest_emission_result');
+                if (! $guestEmission) {
+                    return [
+                        'text' => 'Kamu belum melakukan perhitungan emisi pada sesi ini. Silakan ketik "hitung emisi" terlebih dahulu.',
+                        'custom' => ['type' => 'auth_required'],
+                    ];
+                }
+                
+                if ($custom['type'] === 'personal_action_plan_request') {
+                    $totalKg = $guestEmission['total_kg'] ?? 1250.00;
+                    $steps = [
+                        [
+                            'rank' => 1,
+                            'label' => 'Listrik Rumah Tangga (Scope 2)',
+                            'emission_kg' => $guestEmission['scope2_kg'] ?? ($totalKg * 0.4),
+                            'advice' => 'Kurangi pemakaian alat elektronik berdaya tinggi dan beralihlah ke lampu LED hemat energi.'
+                        ],
+                        [
+                            'rank' => 2,
+                            'label' => 'Kendaraan & Transportasi (Scope 1 & 3)',
+                            'emission_kg' => $guestEmission['scope1_kg'] ?? ($totalKg * 0.4),
+                            'advice' => 'Manfaatkan transportasi umum atau lakukan perjalanan bersama (carpooling) untuk mobilitas harian.'
+                        ],
+                        [
+                            'rank' => 3,
+                            'label' => 'Pangan & Limbah (Scope 3)',
+                            'emission_kg' => $guestEmission['scope3_kg'] ?? ($totalKg * 0.2),
+                            'advice' => 'Kurangi konsumsi makanan tinggi emisi seperti daging merah dan pilah sampah rumah tangga secara rutin.'
+                        ]
+                    ];
+
+                    $message['text'] = "Berikut adalah rencana prioritas pengurangan emisi Anda berdasarkan estimasi sesi tamu:\n1. Listrik Rumah Tangga\n2. Transportasi\n3. Pangan & Limbah";
+                    $message['custom'] = [
+                        'type' => 'personal_action_plan_result',
+                        'steps' => $steps,
+                    ];
+                    return $message;
+                }
+
+                $message['text'] = "Saldo karbon sementara (Sesi Tamu):\nTotal emisi terhitung: " . number_format($guestEmission['total_kg'], 2, ',', '.') . " kg CO2e.\n💡 Masuk (login) untuk menyimpan riwayat dan melakukan transaksi offset nyata.";
+                $message['custom'] = [
+                    'type' => 'carbon_balance_result',
+                    'total_kg' => $guestEmission['total_kg'],
+                    'offset_kg' => 0,
+                    'remaining_kg' => $guestEmission['total_kg'],
+                    'offset_percentage' => 0,
+                ];
+                return $message;
+            }
+
+            if (! $user && ($custom['type'] ?? '') === 'offset_simulation_request') {
+                $guestEmission = session('guest_emission_result');
+                if (! $guestEmission) {
+                    return [
+                        'text' => 'Kamu belum melakukan perhitungan emisi pada sesi ini. Silakan ketik "hitung emisi" terlebih dahulu.',
+                        'custom' => ['type' => 'auth_required'],
+                    ];
+                }
+
+                $totalKg = $guestEmission['total_kg'] ?? 1250.00;
+                $plannedTon = 1.0; 
+                $remainingBefore = $totalKg;
+                $remainingAfter = max(0, $totalKg - ($plannedTon * 1000));
+                $pricePerTon = 150000;
+
+                $message['text'] = "Simulasi pembelian {$plannedTon} ton kredit karbon berhasil:\nSisa emisi sebelum: " . number_format($remainingBefore, 2, ',', '.') . " kg\nSisa emisi sesudah: " . number_format($remainingAfter, 2, ',', '.') . " kg";
+                $message['custom'] = [
+                    'type' => 'offset_simulation_result',
+                    'planned_ton' => $plannedTon,
+                    'remaining_before_kg' => $remainingBefore,
+                    'remaining_after_kg' => $remainingAfter,
+                    'estimated_total_cost' => $plannedTon * $pricePerTon,
+                ];
+                return $message;
+            }
+
+            // 3. Jika sudah login atau permintaan informasi umum lainnya, teruskan ke InformationService
             $answer = $this->informationService->answer(
                 (string) $custom['type'],
                 (string) ($custom['query'] ?? $userMessage),
@@ -282,14 +463,6 @@ class ChatbotController extends Controller
     private function isRecommendationRequest(string $message): bool
     {
         $message = Str::lower($message);
-
-        if (Str::contains($message, [
-            'mengapa', 'kenapa', 'alasan', 'dasar rekomendasi', 'skor rekomendasi',
-            'cara memilih', 'bagaimana memilih', 'panduan memilih',
-        ])) {
-            return false;
-        }
-
         return $message === '/ask_project_recommendation'
             || (Str::contains($message, 'proyek') && Str::contains($message, [
                 'rekomendas', 'carikan', 'cocok', 'sesuai', 'saran', 'pilih', 'relevan',
@@ -299,43 +472,27 @@ class ChatbotController extends Controller
     private function isOffsetSimulationRequest(string $message): bool
     {
         $message = Str::lower($message);
-
         return Str::contains($message, [
             'simulasi offset',
             'simulasikan pembelian',
             'simulasi beli',
+            'simulasi kredit karbon',
+            'simulasi pembelian kredit karbon',
+            'simulasi'
         ]);
-    }
-
-    private function activityAccountType(array $data): ?string
-    {
-        $hasPersonalFields = array_key_exists('energy_fuel', $data);
-        $hasCompanyFields = array_key_exists('stationary_fuel', $data);
-
-        if ($hasPersonalFields === $hasCompanyFields) {
-            return null;
-        }
-
-        return $hasPersonalFields ? 'personal' : 'company';
     }
 
     private function resultText(array $result): string
     {
         $mode = $result['mode'] === 'company' ? 'perusahaan' : 'individu';
 
-        $text = "Hasil estimasi emisi akun {$mode}:\n"
+        return "Hasil estimasi emisi akun {$mode}:\n"
             .'Scope 1: '.$this->formatNumber($result['scope1_kg'])." kg CO2e\n"
             .'Scope 2: '.$this->formatNumber($result['scope2_kg'])." kg CO2e\n"
             .'Scope 3: '.$this->formatNumber($result['scope3_kg'])." kg CO2e\n"
             .'Total: '.$this->formatNumber($result['total_kg']).' kg CO2e '
             .'('.$this->formatNumber($result['total_ton'], 6)." ton)\n"
             .'Estimasi biaya offset: Rp '.$this->formatNumber($result['estimated_cost'], 0);
-
-        if (empty($result['recommendations'])) {
-            $text .= "\nBelum ada proyek offset yang tersedia untuk direkomendasikan.";
-        }
-
-        return $text;
     }
 
     private function formatNumber(float|int $value, int $decimals = 2): string
@@ -343,3 +500,4 @@ class ChatbotController extends Controller
         return number_format((float) $value, $decimals, ',', '.');
     }
 }
+

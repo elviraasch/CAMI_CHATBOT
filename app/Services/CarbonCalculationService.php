@@ -10,19 +10,16 @@ use InvalidArgumentException;
 class CarbonCalculationService
 {
     private const FUEL_FACTORS = [
-        'solar_cn53' => 2.626, 'solar_cn51' => 2.650, 'solar_cn48' => 2.673,
-        'diesel' => 2.779, 'ron98' => 2.310, 'ron92' => 2.305,
-        'ron90' => 2.309, 'ron88' => 2.315, 'lpg' => 3.150,
-        'coal_bit' => 1.974, 'coal_briket' => 2.018, 'charcoal' => 3.304,
-        'natgas' => 2.150, 'lgv' => 3.004, 'lng' => 2.699,
-        'avtur' => 2.549, 'kerosene' => 2.553, 'cng' => 2.034,
-        'wood' => 1.747,
+        'solar_cn53' => 72.85, 'solar_cn51' => 72.93, 'solar_cn48' => 73.28,
+        'diesel' => 74.52, 'ron98' => 68.91, 'ron92' => 69.04,
+        'ron90' => 69.29, 'ron88' => 69.67, 'lpg' => 65.41,
+        'avtur' => 72.36, 'kerosene' => 72.43, 'minyakbakar' => 77.90,
+        'coal' => 99.718, 'naturalgas' => 57.600
     ];
 
     private const GRID_FACTORS = [
-        'jawa_bali' => 0.8099, 'sumatra' => 0.8790,
-        'kalimantan' => 1.0460, 'sulawesi' => 0.8450,
-        'household' => 0.8099,
+        'jawa_bali' => 0.80, // Disamakan dengan calculator.js (0.80)
+        'household' => 0.80, // Disamakan dengan calculator.js (0.80)
     ];
 
     private const TRANSIT_FACTORS = [
@@ -31,7 +28,7 @@ class CarbonCalculationService
     ];
 
     private const FLIGHT_FACTORS = [
-        'economy' => 0.133, 'business' => 0.266, 'first' => 0.399,
+        'economy' => 1.0, 'business' => 1.5, 'first' => 2.0,
     ];
 
     private const TRAIN_FACTORS = [
@@ -41,27 +38,30 @@ class CarbonCalculationService
     ];
 
     private const FOOD_FACTORS = [
-        'beef' => 27.0, 'poultry' => 6.9, 'fish' => 5.4, 'veg' => 0.4,
+        'beef' => 209.9, 'poultry' => 20.1, 'fish' => 26.5, 'veg' => 1.0, 
+        'rice' => 8.8, 'egg' => 8.4, 'fruits' => 2.9, 'milk' => 4.8,
     ];
 
     private const VEHICLE_FACTORS = [
         'car_petrol' => [
-            'ron98' => 0.210, 'ron92' => 0.212, 'ron90' => 0.214,
-            'ron88' => 0.216, 'listrik' => 0.0,
+            'ron98' => 68.91, 'ron92' => 69.04, 'ron90' => 69.29,
+            'ron88' => 69.67, 
         ],
         'car_diesel' => [
-            'diesel' => 0.270, 'ron98' => 0.270, 'ron92' => 0.270,
-            'ron90' => 0.270, 'ron88' => 0.270, 'listrik' => 0.0,
+            'ron98' => 68.91, 'ron92' => 69.04, 'ron90' => 69.29,
+            'ron88' => 69.67, 'diesel' => 74.52,
         ],
         'motorcycle' => [
-            'ron98' => 0.108, 'ron92' => 0.110, 'ron90' => 0.112,
-            'ron88' => 0.113, 'listrik' => 0.0,
+            'ron98' => 68.91, 'ron92' => 69.04, 'ron90' => 69.29,
+            'ron88' => 69.67, 
         ],
     ];
 
-    private const WATER_FACTOR = 0.344;
+    private const WATER_FACTOR = 0.149; // Disamakan dengan calculator.js
 
     private const WASTE_FACTOR = 0.52;
+    
+    private const LIMBAH_FACTOR = 0.272;  
 
     private const HOTEL_FACTOR = 49.37;
 
