@@ -299,11 +299,12 @@ class ValidatePersonalCalculationForm(FormValidationAction):
             {
                 "lpg": ["gas tabung"],
                 "cng": ["gas alam", "gas pipa"],
+                "kerosene": ["minyak tanah", "kerosin", "kerosene"],
                 "wood": ["kayu", "kayu bakar", "biomassa"],
                 "none": NONE_ALIASES,
             },
             dispatcher,
-            "Pilih LPG, CNG, kayu bakar, atau Tidak ada.",
+            "Pilih LPG, CNG, minyak tanah, kayu bakar, atau Tidak ada.",
         )
 
     def validate_personal_energy_qty(self, value, dispatcher, tracker, domain):
@@ -387,7 +388,7 @@ class ValidatePersonalCalculationForm(FormValidationAction):
                 "none": NONE_ALIASES,
             },
             dispatcher,
-            "Pilih Sapi/kambing, Ayam, Ikan, Sayuran, Telur, Buah-buahan, Susu, atau Tidak ada.",
+            "Pilih Beras/nasi, Sapi/kambing, Ayam, Ikan, Sayuran, Telur, Buah-buahan, Susu, atau Tidak ada.",
         )
 
     def validate_personal_food_kg(self, value, dispatcher, tracker, domain):
