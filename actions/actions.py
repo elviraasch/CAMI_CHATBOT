@@ -38,6 +38,7 @@ COMPANY_SLOTS = [
     "company_hotel_nights",
     "company_hotel_rooms",
     "company_train_class",
+    "company_train_pax",
     "company_train_km",
 ]
 
@@ -53,8 +54,8 @@ ELECTRICITY_REGION_ALIASES = {
         "surakarta", "solo", "yogyakarta", "jogja", "jawa timur", "surabaya",
         "malang", "kediri", "madiun", "jember", "banyuwangi", "denpasar",
     ],
-    "sumatra": [
-        "sumatra", "sumatera", "aceh", "banda aceh", "sumatera utara", "medan",
+    "sumatera": [
+        "sumatera", "sumatra", "aceh", "banda aceh", "sumatera utara", "medan",
         "riau", "pekanbaru", "kepulauan riau", "kepri", "batam", "sumatera barat",
         "padang", "jambi", "bengkulu", "sumatera selatan", "palembang", "lampung",
         "bandar lampung", "bangka belitung", "pangkal pinang",
@@ -68,6 +69,12 @@ ELECTRICITY_REGION_ALIASES = {
         "sulawesi", "sulawesi utara", "manado", "gorontalo", "sulawesi tengah",
         "palu", "sulawesi barat", "mamuju", "sulawesi selatan", "makassar",
         "sulawesi tenggara", "kendari",
+    ],
+    "papua": [
+        "papua", "maluku papua", "maluku dan papua", "jayapura", "sorong",
+        "manokwari", "merauke", "timika", "mimika", "biak", "nabire", "wamena",
+        "papua barat", "papua barat daya", "papua tengah", "papua pegunungan",
+        "papua selatan", "maluku", "ambon", "maluku utara", "ternate", "tidore",
     ],
 }
 
@@ -194,7 +201,7 @@ def _electricity_grid_result(
     dispatcher.utter_message(
         text=(
             "Daerah itu belum dapat dipetakan. Tulis nama provinsi/kota lain atau "
-            "pilih jaringan Jawa-Bali, Sumatra, Kalimantan, atau Sulawesi."
+            "pilih jaringan Jawa-Bali, Sumatera, Kalimantan, Sulawesi, atau Papua."
         )
     )
     return {slot_name: None}
@@ -353,11 +360,12 @@ class ValidatePersonalCalculationForm(FormValidationAction):
                 "flight_int_short": ["pesawat internasional pendek"],
                 "flight_int_long": ["pesawat internasional panjang"],
                 "train": ["kereta", "krl", "kereta api"],
-                "bus": ["bus", "angkot", "taksi", "ojek online"],
+                "bus": ["bus", "angkot", "transjakarta"],
+                "ojol": ["ojol", "ojek online", "ojek", "taksi online"],
                 "none": NONE_ALIASES,
             },
             dispatcher,
-            "Pilih Pesawat domestik, Pesawat internasional, Kereta, Bus, atau Tidak ada.",
+            "Pilih Pesawat domestik, Pesawat internasional, Kereta, Bus, Ojek Online (Ojol), atau Tidak ada.",
         )
 
     def validate_personal_transit_km(self, value, dispatcher, tracker, domain):
@@ -368,14 +376,18 @@ class ValidatePersonalCalculationForm(FormValidationAction):
             "personal_food_type",
             value,
             {
-                "beef": ["sapi", "kambing", "daging sapi"],
+                "beef": ["sapi", "kambing", "daging sapi", "daging kambing"],
                 "poultry": ["ayam", "unggas", "daging ayam"],
                 "fish": ["ikan", "seafood"],
-                "veg": ["sayur", "sayuran", "buah", "nabati"],
+                "veg": ["sayur", "sayuran", "nabati"],
+                "rice": ["beras", "nasi"],
+                "egg": ["telur"],
+                "fruits": ["buah", "buah buahan"],
+                "dairy": ["susu", "produk susu", "milk"],
                 "none": NONE_ALIASES,
             },
             dispatcher,
-            "Pilih Sapi/kambing, Ayam, Ikan, Nabati, atau Tidak ada.",
+            "Pilih Sapi/kambing, Ayam, Ikan, Sayuran, Telur, Buah-buahan, Susu, atau Tidak ada.",
         )
 
     def validate_personal_food_kg(self, value, dispatcher, tracker, domain):
@@ -429,7 +441,7 @@ class ValidateCompanyCalculationForm(FormValidationAction):
         if float(tracker.get_slot("company_hotel_nights") or 0) == 0:
             slots = _without(slots, "company_hotel_rooms")
         if tracker.get_slot("company_train_class") == "none":
-            slots = _without(slots, "company_train_km")
+            slots = _without(slots, "company_train_pax", "company_train_km")
         return slots
 
     def validate_company_stationary_fuel(self, value, dispatcher, tracker, domain):
@@ -437,23 +449,24 @@ class ValidateCompanyCalculationForm(FormValidationAction):
             "company_stationary_fuel",
             value,
             {
-                "solar_cn53": ["solar cn53", "cn53"],
-                "solar_cn51": ["solar cn51", "cn51"],
-                "solar_cn48": ["solar cn48", "cn48", "solar"],
-                "diesel": ["minyak diesel"],
-                "ron98": ["ron 98"],
-                "ron92": ["ron 92", "pertamax"],
-                "ron90": ["ron 90", "pertalite"],
-                "ron88": ["ron 88", "premium"],
-                "lpg": ["gas lpg"],
-                "coal_bit": ["batubara", "bituminous coal"],
+                "solar_cn53": ["minyak solar cn53", "solar cn53", "cn53"],
+                "solar_cn51": ["minyak solar cn51", "solar cn51", "cn51"],
+                "solar_cn48": ["minyak solar cn48", "solar cn48", "cn48", "solar"],
+                "diesel": ["minyak diesel", "diesel"],
+                "minyakbakar": ["minyak bakar (mfo/hfo)", "minyak bakar mfo/hfo", "minyak bakar", "mfo", "hfo", "fuel oil"],
+                "ron98": ["bensin ron98", "bensin ron 98", "ron 98"],
+                "ron92": ["bensin ron92", "bensin ron 92", "ron 92", "pertamax"],
+                "ron90": ["bensin ron90", "bensin ron 90", "ron 90", "pertalite"],
+                "ron88": ["bensin ron88", "bensin ron 88", "ron 88", "premium"],
+                "kerosene": ["minyak tanah", "kerosin"],
+                "lpg": ["lpg (liquid petroleum gas)", "gas lpg", "lpg"],
+                "natgas": ["gas alam", "natural gas", "naturalgas"],
+                "cng": ["cng (compressed natural gas)", "gas cng", "compressed natural gas", "cng"],
+                "coal_bit": ["batubara (coal)", "batubara", "coal", "bituminous coal"],
                 "coal_briket": ["briket", "briket batubara"],
                 "charcoal": ["arang"],
-                "natgas": ["gas alam"],
                 "lgv": ["gas kendaraan"],
                 "lng": ["gas alam cair"],
-                "avtur": ["jet kerosene"],
-                "kerosene": ["minyak tanah"],
                 "none": NONE_ALIASES,
             },
             dispatcher,
@@ -468,13 +481,26 @@ class ValidateCompanyCalculationForm(FormValidationAction):
             "company_mobile_method",
             value,
             {
-                "fuel": ["konsumsi bbm", "bbm", "liter"],
-                "distance": ["jarak", "kilometer", "km"],
-                "both": ["keduanya", "bbm dan jarak"],
+                "fuel": [
+                    "berdasarkan bbm",
+                    "berdasarkan pemakaian bbm",
+                    "pemakaian bbm",
+                    "konsumsi bbm",
+                    "bbm",
+                    "liter",
+                ],
+                "distance": [
+                    "berdasarkan jarak",
+                    "berdasarkan jarak tempuh",
+                    "jarak tempuh",
+                    "jarak",
+                    "kilometer",
+                    "km",
+                ],
                 "none": NONE_ALIASES,
             },
             dispatcher,
-            "Pilih Berdasarkan BBM, Berdasarkan jarak, Keduanya, atau Tidak ada.",
+            "Pilih Berdasarkan BBM, Berdasarkan jarak, atau Tidak ada.",
         )
 
     def validate_company_mobile_fuel(self, value, dispatcher, tracker, domain):
@@ -482,15 +508,15 @@ class ValidateCompanyCalculationForm(FormValidationAction):
             "company_mobile_fuel",
             value,
             {
-                "solar_cn53": ["solar cn53", "cn53"],
-                "solar_cn51": ["solar cn51", "cn51"],
-                "solar_cn48": ["solar cn48", "cn48", "solar"],
-                "diesel": ["minyak diesel"],
-                "ron98": ["ron 98"],
-                "ron92": ["ron 92", "pertamax"],
-                "ron90": ["ron 90", "pertalite"],
-                "ron88": ["ron 88", "premium"],
-                "avtur": ["jet kerosene"],
+                "solar_cn53": ["minyak solar cn53", "solar cn53", "cn53"],
+                "solar_cn51": ["minyak solar cn51", "solar cn51", "cn51"],
+                "solar_cn48": ["minyak solar cn48", "solar cn48", "cn48", "solar"],
+                "diesel": ["minyak diesel", "diesel"],
+                "ron98": ["bensin ron98", "bensin ron 98", "ron 98"],
+                "ron92": ["bensin ron92", "bensin ron 92", "ron 92", "pertamax"],
+                "ron90": ["bensin ron90", "bensin ron 90", "ron 90", "pertalite"],
+                "ron88": ["bensin ron88", "bensin ron 88", "ron 88", "premium"],
+                "avtur": ["avtur (jet kerosene)", "jet kerosene", "avtur"],
                 "none": NONE_ALIASES,
             },
             dispatcher,
@@ -505,14 +531,14 @@ class ValidateCompanyCalculationForm(FormValidationAction):
             "company_mobile_distance_fuel",
             value,
             {
-                "solar_cn53": ["solar cn53", "cn53"],
-                "solar_cn51": ["solar cn51", "cn51"],
-                "solar_cn48": ["solar cn48", "cn48", "solar"],
-                "diesel": ["minyak diesel"],
-                "ron98": ["ron 98"],
-                "ron92": ["ron 92", "pertamax"],
-                "ron90": ["ron 90", "pertalite"],
-                "ron88": ["ron 88", "premium"],
+                "solar_cn53": ["minyak solar cn53", "solar cn53", "cn53"],
+                "solar_cn51": ["minyak solar cn51", "solar cn51", "cn51"],
+                "solar_cn48": ["minyak solar cn48", "solar cn48", "cn48", "solar"],
+                "diesel": ["minyak diesel", "diesel"],
+                "ron98": ["bensin ron98", "bensin ron 98", "ron 98"],
+                "ron92": ["bensin ron92", "bensin ron 92", "ron 92", "pertamax"],
+                "ron90": ["bensin ron90", "bensin ron 90", "ron 90", "pertalite"],
+                "ron88": ["bensin ron88", "bensin ron 88", "ron 88", "premium"],
                 "none": NONE_ALIASES,
             },
             dispatcher,
@@ -581,6 +607,11 @@ class ValidateCompanyCalculationForm(FormValidationAction):
             "Pilih kelas kereta yang tersedia atau Tidak ada.",
         )
 
+    def validate_company_train_pax(self, value, dispatcher, tracker, domain):
+        return _number_result(
+            "company_train_pax", value, dispatcher, "10 orang", integer=True
+        )
+
     def validate_company_train_km(self, value, dispatcher, tracker, domain):
         return _number_result("company_train_km", value, dispatcher, "800 km")
 
@@ -619,6 +650,7 @@ class ActionSubmitCalculation(Action):
                 "hotel_nights": tracker.get_slot("company_hotel_nights") or 0,
                 "hotel_rooms": tracker.get_slot("company_hotel_rooms") or 0,
                 "train_class": tracker.get_slot("company_train_class") or "none",
+                "train_pax": tracker.get_slot("company_train_pax") or 0,
                 "train_km": tracker.get_slot("company_train_km") or 0,
             }
         else:
@@ -666,23 +698,9 @@ class ActionRecommendProjects(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Any]:
-        metadata = tracker.latest_message.get("metadata") or {}
-        is_authenticated = metadata.get("authenticated", False)
-        
-        # Ambil total emisi dari slot atau sesi jika tersimpan
-        # (Atau fallback ke kalkulasi sementara guest jika ada)
-        total_kg = tracker.get_slot("total_kg") or 1250.00 # Contoh ambil dari slot atau nilai default guest
-
-        # Ambil daftar proyek dari database/service CAMAR berdasarkan total emisi
-        recommendations = _fetch_projects_matching_emission(total_kg)
-
         dispatcher.utter_message(
             text="Berikut adalah proyek offset yang direkomendasikan berdasarkan hasil estimasi emisi kamu:",
-            custom={
-                "type": "recommendation_result",
-                "source": "guest_calculation" if not is_authenticated else "profile",
-                "recommendations": recommendations
-            }
+            json_message={"type": "project_recommendation_request"},
         )
         return []
 

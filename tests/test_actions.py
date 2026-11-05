@@ -130,7 +130,7 @@ class ActionValidationTest(unittest.TestCase):
         )
 
         self.assertEqual(jakarta, {"company_electricity_grid": "jawa_bali"})
-        self.assertEqual(palembang, {"company_electricity_grid": "sumatra"})
+        self.assertEqual(palembang, {"company_electricity_grid": "sumatera"})
         self.assertEqual(dispatcher.messages, [])
 
     def test_other_electricity_region_requests_a_place_name(self):
@@ -185,7 +185,7 @@ class ActionValidationTest(unittest.TestCase):
             "company_mobile_fuel_qty": 100,
             "company_mobile_distance_fuel": "diesel",
             "company_mobile_km": 1000,
-            "company_electricity_grid": "sumatra",
+            "company_electricity_grid": "sumatera",
             "company_electricity_kwh": 1000,
             "company_flight_class": "economy",
             "company_flight_pax": 2,

@@ -297,6 +297,15 @@ slots:
         conditions:
           - active_loop: company_calculation_form
             requested_slot: company_train_class
+  company_train_pax:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        not_intent: batal
+        conditions:
+          - active_loop: company_calculation_form
+            requested_slot: company_train_pax
   company_train_km:
     type: float
     influence_conversation: false
@@ -381,6 +390,8 @@ responses:
           payload: "Kereta"
         - title: "Bus"
           payload: "Bus"
+        - title: "Ojek Online (Ojol)"
+          payload: "Ojol"
         - title: "Tidak ada"
           payload: "Tidak ada"
   utter_ask_personal_calculation_form_personal_transit_km:
@@ -394,8 +405,14 @@ responses:
           payload: "Ayam"
         - title: "Ikan"
           payload: "Ikan"
-        - title: "Nabati"
-          payload: "Nabati"
+        - title: "Sayuran"
+          payload: "Sayuran"
+        - title: "Telur"
+          payload: "Telur"
+        - title: "Buah-buahan"
+          payload: "Buah-buahan"
+        - title: "Susu"
+          payload: "Susu"
         - title: "Tidak ada"
           payload: "Tidak ada"
   utter_ask_personal_calculation_form_personal_food_kg:
@@ -408,22 +425,38 @@ responses:
   utter_ask_company_calculation_form_company_stationary_fuel:
     - text: "Scope 1 — pilih bahan bakar untuk pembakaran stasioner perusahaan:"
       buttons:
-        - title: "Solar CN48"
-          payload: "Solar CN48"
-        - title: "Diesel"
-          payload: "Diesel"
-        - title: "RON 92"
-          payload: "RON 92"
-        - title: "LPG"
-          payload: "LPG"
-        - title: "Gas alam"
-          payload: "Gas alam"
-        - title: "Batubara"
-          payload: "Batubara"
+        - title: "Minyak Solar CN53"
+          payload: "Minyak Solar CN53"
+        - title: "Minyak Solar CN51"
+          payload: "Minyak Solar CN51"
+        - title: "Minyak Solar CN48"
+          payload: "Minyak Solar CN48"
+        - title: "Minyak Diesel"
+          payload: "Minyak Diesel"
+        - title: "Minyak Bakar (MFO/HFO)"
+          payload: "Minyak Bakar (MFO/HFO)"
+        - title: "Bensin RON98"
+          payload: "Bensin RON98"
+        - title: "Bensin RON92"
+          payload: "Bensin RON92"
+        - title: "Bensin RON90"
+          payload: "Bensin RON90"
+        - title: "Bensin RON88"
+          payload: "Bensin RON88"
+        - title: "Minyak Tanah"
+          payload: "Minyak Tanah"
+        - title: "LPG (Liquid Petroleum Gas)"
+          payload: "LPG (Liquid Petroleum Gas)"
+        - title: "Gas Alam"
+          payload: "Gas Alam"
+        - title: "CNG (Compressed Natural Gas)"
+          payload: "CNG (Compressed Natural Gas)"
+        - title: "Batubara (Coal)"
+          payload: "Batubara (Coal)"
         - title: "Tidak ada"
           payload: "Tidak ada"
   utter_ask_company_calculation_form_company_stationary_qty:
-    - text: "Berapa konsumsi bahan bakar stasioner per tahun? Gunakan liter untuk BBM, kg untuk LPG/batubara, atau m3 untuk gas alam."
+    - text: "Berapa konsumsi bahan bakar stasioner per tahun? Gunakan liter untuk BBM/Minyak bakar, kg untuk LPG/batubara, atau Nm3 untuk gas alam/CNG."
   utter_ask_company_calculation_form_company_mobile_method:
     - text: "Scope 1 — bagaimana kendaraan operasional akan dihitung?"
       buttons:
@@ -431,51 +464,65 @@ responses:
           payload: "Berdasarkan BBM"
         - title: "Berdasarkan jarak"
           payload: "Berdasarkan jarak"
-        - title: "Keduanya"
-          payload: "Keduanya"
         - title: "Tidak ada"
           payload: "Tidak ada"
   utter_ask_company_calculation_form_company_mobile_fuel:
     - text: "Pilih bahan bakar kendaraan operasional:"
       buttons:
-        - title: "Solar CN48"
-          payload: "Solar CN48"
-        - title: "Diesel"
-          payload: "Diesel"
-        - title: "RON 92"
-          payload: "RON 92"
-        - title: "RON 90"
-          payload: "RON 90"
-        - title: "RON 88"
-          payload: "RON 88"
+        - title: "Minyak Solar CN53"
+          payload: "Minyak Solar CN53"
+        - title: "Minyak Solar CN51"
+          payload: "Minyak Solar CN51"
+        - title: "Minyak Solar CN48"
+          payload: "Minyak Solar CN48"
+        - title: "Minyak Diesel"
+          payload: "Minyak Diesel"
+        - title: "Bensin RON98"
+          payload: "Bensin RON98"
+        - title: "Bensin RON92"
+          payload: "Bensin RON92"
+        - title: "Bensin RON90"
+          payload: "Bensin RON90"
+        - title: "Bensin RON88"
+          payload: "Bensin RON88"
+        - title: "Avtur (Jet Kerosene)"
+          payload: "Avtur (Jet Kerosene)"
   utter_ask_company_calculation_form_company_mobile_fuel_qty:
     - text: "Berapa konsumsi bahan bakar kendaraan operasional per tahun?"
   utter_ask_company_calculation_form_company_mobile_distance_fuel:
     - text: "Untuk perhitungan berdasarkan jarak, pilih jenis bahan bakar kendaraan:"
       buttons:
-        - title: "Diesel"
-          payload: "Diesel"
-        - title: "RON 92"
-          payload: "RON 92"
-        - title: "RON 90"
-          payload: "RON 90"
-        - title: "RON 88"
-          payload: "RON 88"
+        - title: "Minyak Solar CN53"
+          payload: "Minyak Solar CN53"
+        - title: "Minyak Solar CN51"
+          payload: "Minyak Solar CN51"
+        - title: "Minyak Solar CN48"
+          payload: "Minyak Solar CN48"
+        - title: "Minyak Diesel"
+          payload: "Minyak Diesel"
+        - title: "Bensin RON98"
+          payload: "Bensin RON98"
+        - title: "Bensin RON92"
+          payload: "Bensin RON92"
+        - title: "Bensin RON90"
+          payload: "Bensin RON90"
+        - title: "Bensin RON88"
+          payload: "Bensin RON88"
   utter_ask_company_calculation_form_company_mobile_km:
     - text: "Berapa total jarak kendaraan operasional per tahun dalam km?"
   utter_ask_company_calculation_form_company_electricity_grid:
     - text: "Scope 2 - pilih wilayah jaringan listrik atau tulis nama kota/provinsi perusahaan:"
       buttons:
-        - title: "Jakarta"
-          payload: "Jakarta"
         - title: "Jawa-Bali"
           payload: "Jawa-Bali"
-        - title: "Sumatra"
-          payload: "Sumatra"
+        - title: "Sumatera"
+          payload: "Sumatera"
         - title: "Kalimantan"
           payload: "Kalimantan"
         - title: "Sulawesi"
           payload: "Sulawesi"
+        - title: "Maluku & Papua"
+          payload: "Papua"
         - title: "Lainnya"
           payload: "Lainnya"
         - title: "Tidak ada"
@@ -522,6 +569,8 @@ responses:
           payload: "Compartment"
         - title: "Tidak ada"
           payload: "Tidak ada"
+  utter_ask_company_calculation_form_company_train_pax:
+    - text: "Berapa jumlah penumpang perjalanan kereta dinas selama setahun?"
   utter_ask_company_calculation_form_company_train_km:
     - text: "Berapa total jarak perjalanan kereta dinas selama setahun dalam km?"
 
@@ -654,6 +703,7 @@ forms:
       - company_hotel_nights
       - company_hotel_rooms
       - company_train_class
+      - company_train_pax
       - company_train_km
 
 session_config:
