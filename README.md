@@ -100,8 +100,8 @@ CO2e/penumpang-km.
 
 Wilayah listrik perusahaan dapat dipilih berdasarkan jaringan atau ditulis sebagai
 nama kota/provinsi. Contohnya, `Jakarta` dan `Bandung` dipetakan ke Jawa-Bali,
-sedangkan `Palembang` dipetakan ke Sumatra. Tombol **Lainnya** meminta nama daerah.
-Daerah yang belum dikenali harus dipetakan pengguna ke Jawa-Bali, Sumatra,
+sedangkan `Palembang` dipetakan ke Sumatera. Tombol **Lainnya** meminta nama daerah.
+Daerah yang belum dikenali harus dipetakan pengguna ke Jawa-Bali, Sumatera,
 Kalimantan, atau Sulawesi karena hanya empat faktor itulah yang tersedia di
 `/kalkulator`.
 Tipe akun selalu dibaca ulang dari database Laravel. Nilai tipe akun dari browser
@@ -187,7 +187,7 @@ Jika buyer individu memasukkan LPG 10 kg/bulan, mobil bensin RON 92 sejauh
 air 10 m3/bulan, dan sampah 5 kg/bulan, hasilnya **3.346,06 kg CO2e**.
 
 Jika buyer perusahaan memasukkan diesel stasioner 1.000 liter/tahun,
-kendaraan RON 92 sebanyak 100 liter serta diesel 1.000 km, listrik Sumatra
+kendaraan RON 92 sebanyak 100 liter serta diesel 1.000 km, listrik Sumatera
 1.000 kWh, penerbangan ekonomi CGK ke DPS untuk 2 penumpang, hotel 2 malam ×
 3 kamar, dan kereta ekonomi 1.000 km, jarak penerbangannya **982,61 km** dan
 total hasilnya **4.728,28 kg CO2e**.
